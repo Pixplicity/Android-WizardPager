@@ -70,4 +70,9 @@ public class MainActivity extends WizardActivity {
 		dg.show(getSupportFragmentManager(), "place_order_dialog");
 	}
 
+    @Override
+    public boolean useBackForPrevious() {
+        return true;
+    }
+
 }

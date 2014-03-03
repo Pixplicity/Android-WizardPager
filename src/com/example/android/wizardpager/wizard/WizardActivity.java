@@ -129,7 +129,7 @@ public abstract class WizardActivity extends FragmentActivity implements
 
 				@Override
 				public void onClick(View view) {
-                    onBackPressed();
+                    goToPrevious();
 				}
 			});
 		}
@@ -177,16 +177,24 @@ public abstract class WizardActivity extends FragmentActivity implements
 
     @Override
     public void onBackPressed() {
-        if (mPager.getCurrentItem() > 0) {
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-        } else {
+        if (!useBackForPrevious() || !goToPrevious()) {
             super.onBackPressed();
         }
     }
 
-	public abstract AbstractWizardModel onCreateModel();
+    private boolean goToPrevious() {
+        if (mPager.getCurrentItem() > 0) {
+            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+            return true;
+        }
+        return false;
+    }
+
+    public abstract AbstractWizardModel onCreateModel();
 
 	public abstract void onSubmit();
+
+    public abstract boolean useBackForPrevious();
 
 	@Override
 	public AbstractWizardModel onGetModel() {

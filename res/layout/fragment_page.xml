@@ -16,7 +16,8 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp" />
+            android:paddingRight="16dp"
+            android:scaleType="centerInside" />
 
         <ScrollView
             android:layout_width="match_parent"

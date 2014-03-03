@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Google Inc.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,11 +16,10 @@
 
 package com.example.android.wizardpager.wizard.ui;
 
-import com.example.android.wizardpager.R;
-import com.example.android.wizardpager.wizard.model.AbstractWizardModel;
-import com.example.android.wizardpager.wizard.model.ModelCallbacks;
-import com.example.android.wizardpager.wizard.model.Page;
-import com.example.android.wizardpager.wizard.model.ReviewItem;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -33,20 +32,21 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import com.example.android.wizardpager.R;
+import com.example.android.wizardpager.wizard.model.AbstractWizardModel;
+import com.example.android.wizardpager.wizard.model.ModelCallbacks;
+import com.example.android.wizardpager.wizard.model.Page;
+import com.example.android.wizardpager.wizard.model.ReviewItem;
 
 public class ReviewFragment extends ListFragment implements ModelCallbacks {
+
     private Callbacks mCallbacks;
     private AbstractWizardModel mWizardModel;
     private List<ReviewItem> mCurrentReviewItems;
 
     private ReviewAdapter mReviewAdapter;
 
-    public ReviewFragment() {
-    }
+    public ReviewFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,10 +57,10 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_page, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_page_list, container, false);
 
         TextView titleView = (TextView) rootView.findViewById(android.R.id.title);
-        titleView.setText(R.string.review);
+        titleView.setText(R.string.wizard_review);
         titleView.setTextColor(getResources().getColor(R.color.review_green));
 
         ListView listView = (ListView) rootView.findViewById(android.R.id.list);
@@ -104,6 +104,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
             page.getReviewItems(reviewItems);
         }
         Collections.sort(reviewItems, new Comparator<ReviewItem>() {
+
             @Override
             public int compare(ReviewItem a, ReviewItem b) {
                 return a.getWeight() > b.getWeight() ? +1 : a.getWeight() < b.getWeight() ? -1 : 0;
@@ -122,11 +123,14 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
     }
 
     public interface Callbacks {
+
         AbstractWizardModel onGetModel();
+
         void onEditScreenAfterReview(String pageKey);
     }
 
     private class ReviewAdapter extends BaseAdapter {
+
         @Override
         public boolean hasStableIds() {
             return true;

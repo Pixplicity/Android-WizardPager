@@ -16,11 +16,11 @@
 
 package com.example.android.wizardpager.wizard.model;
 
-import android.content.Context;
-import android.os.Bundle;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import android.content.Context;
+import android.os.Bundle;
 
 /**
  * Represents a wizard model, including the pages/steps in the wizard, their dependencies, and their
@@ -31,8 +31,8 @@ import java.util.List;
 public abstract class AbstractWizardModel implements ModelCallbacks {
     protected Context mContext;
 
-    private List<ModelCallbacks> mListeners = new ArrayList<ModelCallbacks>();
-    private PageList mRootPageList;
+    private final List<ModelCallbacks> mListeners = new ArrayList<ModelCallbacks>();
+    private final PageList mRootPageList;
 
     public AbstractWizardModel(Context context) {
         mContext = context;
@@ -97,4 +97,9 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
     public void unregisterListener(ModelCallbacks listener) {
         mListeners.remove(listener);
     }
+
+    public boolean hasReviewPage() {
+        return true;
+    }
+
 }

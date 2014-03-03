@@ -16,20 +16,20 @@
 
 package com.example.android.wizardpager.wizard.model;
 
-import com.example.android.wizardpager.wizard.ui.SingleChoiceFragment;
-
-import android.support.v4.app.Fragment;
-import android.text.TextUtils;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import android.text.TextUtils;
+
+import com.example.android.wizardpager.wizard.ui.SingleChoiceFragment;
+import com.example.android.wizardpager.wizard.ui.WizardFragment;
 
 /**
  * A page representing a branching point in the wizard. Depending on which choice is selected, the
  * next set of steps in the wizard may change.
  */
 public class BranchPage extends SingleFixedChoicePage {
-    private List<Branch> mBranches = new ArrayList<Branch>();
+    private final List<Branch> mBranches = new ArrayList<Branch>();
 
     public BranchPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
@@ -77,14 +77,16 @@ public class BranchPage extends SingleFixedChoicePage {
     }
 
     @Override
-    public Fragment createFragment() {
+    public WizardFragment createFragment() {
         return SingleChoiceFragment.create(getKey());
     }
 
+    @Override
     public String getOptionAt(int position) {
         return mBranches.get(position).choice;
     }
 
+    @Override
     public int getOptionCount() {
         return mBranches.size();
     }
@@ -105,6 +107,7 @@ public class BranchPage extends SingleFixedChoicePage {
         super.notifyDataChanged();
     }
 
+    @Override
     public BranchPage setValue(String value) {
         mData.putString(SIMPLE_DATA_KEY, value);
         return this;

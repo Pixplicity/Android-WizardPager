@@ -15,12 +15,14 @@
   -->
 
 <resources>
-    <string name="app_name">Place Order</string>
+    <string name="wizard_next">Next</string>
+    <string name="wizard_previous">Previous</string>
+    <string name="wizard_finish">Submit order</string>
+    <string name="wizard_review">Review</string>
+    
+    <!-- Example activity only -->
 
-    <string name="next">Next</string>
-    <string name="prev">Previous</string>
-    <string name="finish">Submit order</string>
-    <string name="review">Review</string>
+    <string name="app_name">Place Order</string>
 
     <string name="label_your_name">Name</string>
     <string name="label_your_email">Email</string>

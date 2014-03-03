@@ -16,10 +16,11 @@
 
 package com.example.android.wizardpager.wizard.model;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-
 import java.util.ArrayList;
+
+import android.os.Bundle;
+
+import com.example.android.wizardpager.wizard.ui.WizardFragment;
 
 /**
  * Represents a single page in the wizard.
@@ -71,10 +72,10 @@ public abstract class Page implements PageTreeNode {
         dest.add(this);
     }
 
-    public abstract Fragment createFragment();
+    public abstract WizardFragment createFragment();
 
     public String getKey() {
-        return (mParentKey != null) ? mParentKey + ":" + mTitle : mTitle;
+        return mParentKey != null ? mParentKey + ":" + mTitle : mTitle;
     }
 
     public abstract void getReviewItems(ArrayList<ReviewItem> dest);

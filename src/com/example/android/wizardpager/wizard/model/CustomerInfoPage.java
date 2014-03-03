@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Google Inc.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,17 +16,18 @@
 
 package com.example.android.wizardpager.wizard.model;
 
-import com.example.android.wizardpager.wizard.ui.CustomerInfoFragment;
+import java.util.ArrayList;
 
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 
-import java.util.ArrayList;
+import com.example.android.wizardpager.wizard.ui.CustomerInfoFragment;
+import com.example.android.wizardpager.wizard.ui.WizardFragment;
 
 /**
  * A page asking for a name and an email.
  */
 public class CustomerInfoPage extends Page {
+
     public static final String NAME_DATA_KEY = "name";
     public static final String EMAIL_DATA_KEY = "email";
 
@@ -35,7 +36,7 @@ public class CustomerInfoPage extends Page {
     }
 
     @Override
-    public Fragment createFragment() {
+    public WizardFragment createFragment() {
         return CustomerInfoFragment.create(getKey());
     }
 

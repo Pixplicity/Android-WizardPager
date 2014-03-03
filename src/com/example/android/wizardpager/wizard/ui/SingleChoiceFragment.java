@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Google Inc.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,31 +16,25 @@
 
 package com.example.android.wizardpager.wizard.ui;
 
-import com.example.android.wizardpager.R;
-import com.example.android.wizardpager.wizard.model.Page;
-import com.example.android.wizardpager.wizard.model.SingleFixedChoicePage;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.example.android.wizardpager.R;
+import com.example.android.wizardpager.wizard.model.Page;
+import com.example.android.wizardpager.wizard.model.SingleFixedChoicePage;
 
-public class SingleChoiceFragment extends ListFragment {
-    private static final String ARG_KEY = "key";
+public class SingleChoiceFragment extends WizardListFragment {
 
-    private PageFragmentCallbacks mCallbacks;
     private List<String> mChoices;
-    private String mKey;
-    private Page mPage;
 
     public static SingleChoiceFragment create(String key) {
         Bundle args = new Bundle();
@@ -51,16 +45,11 @@ public class SingleChoiceFragment extends ListFragment {
         return fragment;
     }
 
-    public SingleChoiceFragment() {
-    }
+    public SingleChoiceFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Bundle args = getArguments();
-        mKey = args.getString(ARG_KEY);
-        mPage = mCallbacks.onGetPage(mKey);
 
         SingleFixedChoicePage fixedChoicePage = (SingleFixedChoicePage) mPage;
         mChoices = new ArrayList<String>();
@@ -72,24 +61,18 @@ public class SingleChoiceFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_page, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_page_list, container, false);
         ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
-
-        final ListView listView = (ListView) rootView.findViewById(android.R.id.list);
-        setListAdapter(new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_single_choice,
-                android.R.id.text1,
-                mChoices));
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         // Pre-select currently selected item.
         new Handler().post(new Runnable() {
+
             @Override
             public void run() {
                 String selection = mPage.getData().getString(Page.SIMPLE_DATA_KEY);
                 for (int i = 0; i < mChoices.size(); i++) {
                     if (mChoices.get(i).equals(selection)) {
-                        listView.setItemChecked(i, true);
+                        mListView.setItemChecked(i, true);
                         break;
                     }
                 }
@@ -117,9 +100,10 @@ public class SingleChoiceFragment extends ListFragment {
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(AdapterView<?> l, View view, int position, long id) {
         mPage.getData().putString(Page.SIMPLE_DATA_KEY,
-                getListAdapter().getItem(position).toString());
+                mListView.getAdapter().getItem(position).toString());
         mPage.notifyDataChanged();
     }
+
 }

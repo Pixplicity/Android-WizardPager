@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/selectable_item_background"
-            android:text="@string/prev" />
+            android:text="@string/wizard_previous" />
 
         <Button
             android:id="@+id/next_button"
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/selectable_item_background"
-            android:text="@string/next" />
+            android:text="@string/wizard_next" />
     </LinearLayout>
 
 </LinearLayout>

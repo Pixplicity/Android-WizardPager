@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Google Inc.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,34 +16,24 @@
 
 package com.example.android.wizardpager.wizard.ui;
 
-import com.example.android.wizardpager.R;
-import com.example.android.wizardpager.wizard.model.MultipleFixedChoicePage;
-import com.example.android.wizardpager.wizard.model.Page;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ListFragment;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import com.example.android.wizardpager.R;
+import com.example.android.wizardpager.wizard.model.MultipleFixedChoicePage;
+import com.example.android.wizardpager.wizard.model.Page;
 
-public class MultipleChoiceFragment extends ListFragment {
-    private static final String ARG_KEY = "key";
-
-    private PageFragmentCallbacks mCallbacks;
-    private String mKey;
-    private List<String> mChoices;
-    private Page mPage;
+public class MultipleChoiceFragment extends WizardListFragment {
 
     public static MultipleChoiceFragment create(String key) {
         Bundle args = new Bundle();
@@ -54,16 +44,11 @@ public class MultipleChoiceFragment extends ListFragment {
         return fragment;
     }
 
-    public MultipleChoiceFragment() {
-    }
+    public MultipleChoiceFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Bundle args = getArguments();
-        mKey = args.getString(ARG_KEY);
-        mPage = mCallbacks.onGetPage(mKey);
 
         MultipleFixedChoicePage fixedChoicePage = (MultipleFixedChoicePage) mPage;
         mChoices = new ArrayList<String>();
@@ -75,18 +60,12 @@ public class MultipleChoiceFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_page, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_page_list, container, false);
         ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
-
-        final ListView listView = (ListView) rootView.findViewById(android.R.id.list);
-        setListAdapter(new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_multiple_choice,
-                android.R.id.text1,
-                mChoices));
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
         // Pre-select currently selected items.
         new Handler().post(new Runnable() {
+
             @Override
             public void run() {
                 ArrayList<String> selectedItems = mPage.getData().getStringArrayList(
@@ -99,7 +78,7 @@ public class MultipleChoiceFragment extends ListFragment {
 
                 for (int i = 0; i < mChoices.size(); i++) {
                     if (selectedSet.contains(mChoices.get(i))) {
-                        listView.setItemChecked(i, true);
+                        mListView.setItemChecked(i, true);
                     }
                 }
             }
@@ -109,29 +88,13 @@ public class MultipleChoiceFragment extends ListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        if (!(activity instanceof PageFragmentCallbacks)) {
-            throw new ClassCastException("Activity must implement PageFragmentCallbacks");
-        }
-
-        mCallbacks = (PageFragmentCallbacks) activity;
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mCallbacks = null;
-    }
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        SparseBooleanArray checkedPositions = getListView().getCheckedItemPositions();
+    public void onListItemClick(AdapterView<?> l, View v, int position, long id) {
+        SparseBooleanArray checkedPositions = mListView.getCheckedItemPositions();
         ArrayList<String> selections = new ArrayList<String>();
         for (int i = 0; i < checkedPositions.size(); i++) {
             if (checkedPositions.valueAt(i)) {
-                selections.add(getListAdapter().getItem(checkedPositions.keyAt(i)).toString());
+                selections.add(
+                        mListView.getAdapter().getItem(checkedPositions.keyAt(i)).toString());
             }
         }
 

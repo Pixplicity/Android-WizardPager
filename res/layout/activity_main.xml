@@ -12,24 +12,33 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
+-->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-    <com.example.android.wizardpager.wizard.ui.StepPagerStrip
-        android:id="@+id/strip"
+    <com.example.android.wizardpager.wizard.ui.BoundedLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="8dp"
-        android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-        android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-        android:gravity="left" />
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        app:bounded_width="@dimen/page_width_max" >
+
+        <com.example.android.wizardpager.wizard.ui.StepPagerStrip
+            android:id="@+id/strip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:gravity="left"
+            android:paddingBottom="8dp"
+            android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
+            android:paddingRight="?android:attr/listPreferredItemPaddingRight"
+            android:paddingTop="16dp" />
+    </com.example.android.wizardpager.wizard.ui.BoundedLinearLayout>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
@@ -37,35 +46,35 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <View android:id="@+id/divider"
-        android:background="?android:attr/dividerHorizontal"
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_width="match_parent" />
+        android:background="?android:attr/dividerHorizontal" />
 
     <LinearLayout
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal" >
 
         <Button
-            style="?android:attr/buttonBarButtonStyle"
-            android:background="@drawable/selectable_item_background"
             android:id="@+id/prev_button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selectable_item_background"
             android:text="@string/prev" />
 
         <Button
-            style="?android:attr/buttonBarButtonStyle"
-            android:background="@drawable/selectable_item_background"
             android:id="@+id/next_button"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selectable_item_background"
             android:text="@string/next" />
-
     </LinearLayout>
 
 </LinearLayout>

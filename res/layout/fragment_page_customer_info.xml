@@ -14,43 +14,57 @@
   limitations under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/WizardPageContainer">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-    <TextView style="@style/WizardPageTitle" />
+    <com.example.android.wizardpager.wizard.ui.BoundedLinearLayout
+        style="@style/WizardPageContainer"
+        android:layout_gravity="center"
+        app:bounded_width="@dimen/page_width_max" >
 
-    <ScrollView android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:scrollbarStyle="outsideOverlay">
+        <TextView style="@style/WizardPageTitle" />
 
-        <LinearLayout android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:scrollbarStyle="outsideOverlay" >
 
-            <TextView style="@style/WizardFormLabel"
-                android:text="@string/label_your_name" />
-
-            <EditText android:id="@+id/your_name"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:saveEnabled="false"
-                android:inputType="textCapWords"
-                android:hint="@string/hint_your_name"
-                android:layout_marginBottom="16dp" />
+                android:orientation="vertical" >
 
-            <TextView style="@style/WizardFormLabel"
-                android:text="@string/label_your_email" />
+                <TextView
+                    style="@style/WizardFormLabel"
+                    android:text="@string/label_your_name" />
 
-            <EditText android:id="@+id/your_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:saveEnabled="false"
-                android:inputType="textEmailAddress"
-                android:hint="@string/hint_your_email" />
+                <EditText
+                    android:id="@+id/your_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:hint="@string/hint_your_name"
+                    android:inputType="textCapWords"
+                    android:saveEnabled="false" />
 
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+                <TextView
+                    style="@style/WizardFormLabel"
+                    android:text="@string/label_your_email" />
+
+                <EditText
+                    android:id="@+id/your_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_your_email"
+                    android:inputType="textEmailAddress"
+                    android:saveEnabled="false" />
+            </LinearLayout>
+        </ScrollView>
+    </com.example.android.wizardpager.wizard.ui.BoundedLinearLayout>
+
+</FrameLayout>

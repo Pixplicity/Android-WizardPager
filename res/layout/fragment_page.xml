@@ -12,20 +12,29 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
+-->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/WizardPageContainer">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-    <TextView style="@style/WizardPageTitle" />
+    <com.example.android.wizardpager.wizard.ui.BoundedLinearLayout
+        style="@style/WizardPageContainer"
+        android:layout_gravity="center"
+        app:bounded_width="@dimen/page_width_max" >
 
-    <ListView android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:saveEnabled="false"
-        android:scrollbarStyle="outsideOverlay" />
+        <TextView style="@style/WizardPageTitle" />
 
-</LinearLayout>
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:saveEnabled="false"
+            android:scrollbarStyle="outsideOverlay" />
+    </com.example.android.wizardpager.wizard.ui.BoundedLinearLayout>
+
+</FrameLayout>

@@ -11,11 +11,17 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
-  -->
+  limitations under the License.
+-->
 
 <resources>
+
     <declare-styleable name="AppTheme">
         <attr name="textAppearanceFinish" format="reference" />
     </declare-styleable>
+    <declare-styleable name="BoundedView">
+        <attr name="bounded_width" format="dimension" />
+        <attr name="bounded_height" format="dimension" />
+    </declare-styleable>
+
 </resources>

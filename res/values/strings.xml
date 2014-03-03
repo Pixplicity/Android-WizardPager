@@ -27,7 +27,8 @@
     <string name="hint_your_name">e.g. Larry</string>
     <string name="hint_your_email">Optional</string>
 
-    <string name="submit_confirm_message">Place the order with the deli? You will receive an email
+    <string name="submit_confirm_title">Place the order with the deli?</string>
+    <string name="submit_confirm_message">You will receive an email
         confirmation.</string>
     <string name="submit_confirm_button">Place order</string>
 </resources>

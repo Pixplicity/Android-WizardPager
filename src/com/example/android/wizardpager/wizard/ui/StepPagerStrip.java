@@ -1,12 +1,12 @@
 /*
  * Copyright 2013 Google Inc.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,8 +15,6 @@
  */
 
 package com.example.android.wizardpager.wizard.ui;
-
-import com.example.android.wizardpager.R;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -29,28 +27,33 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.example.android.wizardpager.R;
+
 public class StepPagerStrip extends View {
-    private static final int[] ATTRS = new int[]{
+
+    private static final int[] ATTRS = new int[] {
             android.R.attr.gravity
     };
     private int mPageCount;
     private int mCurrentPage;
 
     private int mGravity = Gravity.LEFT | Gravity.TOP;
-    private float mTabWidth;
-    private float mTabHeight;
-    private float mTabSpacing;
+    private final float mTabWidth;
+    private final float mTabHeight;
+    private final float mTabSpacing;
 
-    private Paint mPrevTabPaint;
-    private Paint mSelectedTabPaint;
-    private Paint mSelectedLastTabPaint;
-    private Paint mNextTabPaint;
+    private final Paint mPrevTabPaint;
+    private final Paint mSelectedTabPaint;
+    private final Paint mSelectedReviewTabPaint;
+    private final Paint mNextTabPaint;
 
-    private RectF mTempRectF = new RectF();
+    private final RectF mTempRectF = new RectF();
 
-    //private Scroller mScroller;
+    // private Scroller mScroller;
 
     private OnPageSelectedListener mOnPageSelectedListener;
+
+    private boolean mHasReview;
 
     public StepPagerStrip(Context context) {
         this(context, null, 0);
@@ -78,8 +81,8 @@ public class StepPagerStrip extends View {
         mSelectedTabPaint = new Paint();
         mSelectedTabPaint.setColor(res.getColor(R.color.step_pager_selected_tab_color));
 
-        mSelectedLastTabPaint = new Paint();
-        mSelectedLastTabPaint.setColor(res.getColor(R.color.step_pager_selected_last_tab_color));
+        mSelectedReviewTabPaint = new Paint();
+        mSelectedReviewTabPaint.setColor(res.getColor(R.color.step_pager_selected_review_tab_color));
 
         mNextTabPaint = new Paint();
         mNextTabPaint.setColor(res.getColor(R.color.step_pager_next_tab_color));
@@ -102,29 +105,29 @@ public class StepPagerStrip extends View {
         boolean fillHorizontal = false;
 
         switch (mGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
-            case Gravity.CENTER_HORIZONTAL:
-                totalLeft = (getWidth() - totalWidth) / 2;
-                break;
-            case Gravity.RIGHT:
-                totalLeft = getWidth() - getPaddingRight() - totalWidth;
-                break;
-            case Gravity.FILL_HORIZONTAL:
-                totalLeft = getPaddingLeft();
-                fillHorizontal = true;
-                break;
-            default:
-                totalLeft = getPaddingLeft();
+        case Gravity.CENTER_HORIZONTAL:
+            totalLeft = (getWidth() - totalWidth) / 2;
+            break;
+        case Gravity.RIGHT:
+            totalLeft = getWidth() - getPaddingRight() - totalWidth;
+            break;
+        case Gravity.FILL_HORIZONTAL:
+            totalLeft = getPaddingLeft();
+            fillHorizontal = true;
+            break;
+        default:
+            totalLeft = getPaddingLeft();
         }
 
         switch (mGravity & Gravity.VERTICAL_GRAVITY_MASK) {
-            case Gravity.CENTER_VERTICAL:
-                mTempRectF.top = (int) (getHeight() - mTabHeight) / 2;
-                break;
-            case Gravity.BOTTOM:
-                mTempRectF.top = getHeight() - getPaddingBottom() - mTabHeight;
-                break;
-            default:
-                mTempRectF.top = getPaddingTop();
+        case Gravity.CENTER_VERTICAL:
+            mTempRectF.top = (int) (getHeight() - mTabHeight) / 2;
+            break;
+        case Gravity.BOTTOM:
+            mTempRectF.top = getHeight() - getPaddingBottom() - mTabHeight;
+            break;
+        default:
+            mTempRectF.top = getPaddingTop();
         }
 
         mTempRectF.bottom = mTempRectF.top + mTabHeight;
@@ -136,15 +139,15 @@ public class StepPagerStrip extends View {
         }
 
         for (int i = 0; i < mPageCount; i++) {
-            mTempRectF.left = totalLeft + (i * (tabWidth + mTabSpacing));
+            mTempRectF.left = totalLeft + i * (tabWidth + mTabSpacing);
             mTempRectF.right = mTempRectF.left + tabWidth;
             canvas.drawRect(mTempRectF, i < mCurrentPage
                     ? mPrevTabPaint
-                    : (i > mCurrentPage
+                    : i > mCurrentPage
                             ? mNextTabPaint
-                            : (i == mPageCount - 1
-                                    ? mSelectedLastTabPaint
-                                    : mSelectedTabPaint)));
+                            : i == mPageCount - (mHasReview ? 1 : 0)
+                                    ? mSelectedReviewTabPaint
+                                    : mSelectedTabPaint);
         }
     }
 
@@ -171,13 +174,13 @@ public class StepPagerStrip extends View {
     public boolean onTouchEvent(MotionEvent event) {
         if (mOnPageSelectedListener != null) {
             switch (event.getActionMasked()) {
-                case MotionEvent.ACTION_DOWN:
-                case MotionEvent.ACTION_MOVE:
-                    int position = hitTest(event.getX());
-                    if (position >= 0) {
-                        mOnPageSelectedListener.onPageStripSelected(position);
-                    }
-                    return true;
+            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_MOVE:
+                int position = hitTest(event.getX());
+                if (position >= 0) {
+                    mOnPageSelectedListener.onPageStripSelected(position);
+                }
+                return true;
             }
         }
         return super.onTouchEvent(event);
@@ -193,18 +196,18 @@ public class StepPagerStrip extends View {
         boolean fillHorizontal = false;
 
         switch (mGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
-            case Gravity.CENTER_HORIZONTAL:
-                totalLeft = (getWidth() - totalWidth) / 2;
-                break;
-            case Gravity.RIGHT:
-                totalLeft = getWidth() - getPaddingRight() - totalWidth;
-                break;
-            case Gravity.FILL_HORIZONTAL:
-                totalLeft = getPaddingLeft();
-                fillHorizontal = true;
-                break;
-            default:
-                totalLeft = getPaddingLeft();
+        case Gravity.CENTER_HORIZONTAL:
+            totalLeft = (getWidth() - totalWidth) / 2;
+            break;
+        case Gravity.RIGHT:
+            totalLeft = getWidth() - getPaddingRight() - totalWidth;
+            break;
+        case Gravity.FILL_HORIZONTAL:
+            totalLeft = getPaddingLeft();
+            fillHorizontal = true;
+            break;
+        default:
+            totalLeft = getPaddingLeft();
         }
 
         float tabWidth = mTabWidth;
@@ -213,9 +216,9 @@ public class StepPagerStrip extends View {
                     - (mPageCount - 1) * mTabSpacing) / mPageCount;
         }
 
-        float totalRight = totalLeft + (mPageCount * (tabWidth + mTabSpacing));
+        float totalRight = totalLeft + mPageCount * (tabWidth + mTabSpacing);
         if (x >= totalLeft && x <= totalRight && totalRight > totalLeft) {
-            return (int) (((x - totalLeft) / (totalRight - totalLeft)) * mPageCount);
+            return (int) ((x - totalLeft) / (totalRight - totalLeft) * mPageCount);
         } else {
             return -1;
         }
@@ -231,21 +234,21 @@ public class StepPagerStrip extends View {
 
     private void scrollCurrentPageIntoView() {
         // TODO: only works with left gravity for now
-//
-//        float widthToActive = getPaddingLeft() + (mCurrentPage + 1) * (mTabWidth + mTabSpacing)
-//                - mTabSpacing;
-//        int viewWidth = getWidth();
-//
-//        int startScrollX = getScrollX();
-//        int destScrollX = (widthToActive > viewWidth) ? (int) (widthToActive - viewWidth) : 0;
-//
-//        if (mScroller == null) {
-//            mScroller = new Scroller(getContext());
-//        }
-//
-//        mScroller.abortAnimation();
-//        mScroller.startScroll(startScrollX, 0, destScrollX - startScrollX, 0);
-//        postInvalidate();
+        //
+        // float widthToActive = getPaddingLeft() + (mCurrentPage + 1) * (mTabWidth + mTabSpacing)
+        // - mTabSpacing;
+        // int viewWidth = getWidth();
+        //
+        // int startScrollX = getScrollX();
+        // int destScrollX = (widthToActive > viewWidth) ? (int) (widthToActive - viewWidth) : 0;
+        //
+        // if (mScroller == null) {
+        // mScroller = new Scroller(getContext());
+        // }
+        //
+        // mScroller.abortAnimation();
+        // mScroller.startScroll(startScrollX, 0, destScrollX - startScrollX, 0);
+        // postInvalidate();
     }
 
     public void setPageCount(int count) {
@@ -255,16 +258,21 @@ public class StepPagerStrip extends View {
         // TODO: Set content description appropriately
     }
 
+    public void setHasReview(boolean hasReview) {
+        mHasReview = hasReview;
+    }
+
     public static interface OnPageSelectedListener {
+
         void onPageStripSelected(int position);
     }
 
-//
-//    @Override
-//    public void computeScroll() {
-//        super.computeScroll();
-//        if (mScroller.computeScrollOffset()) {
-//            setScrollX(mScroller.getCurrX());
-//        }
-//    }
+    //
+    // @Override
+    // public void computeScroll() {
+    // super.computeScroll();
+    // if (mScroller.computeScrollOffset()) {
+    // setScrollX(mScroller.getCurrX());
+    // }
+    // }
 }

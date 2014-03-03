@@ -42,9 +42,8 @@ public abstract class WizardActivity extends FragmentActivity implements
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         mWizardModel = onCreateModel();
+        super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null) {
             mWizardModel.load(savedInstanceState.getBundle("model"));
@@ -95,6 +94,7 @@ public abstract class WizardActivity extends FragmentActivity implements
             }
         });
         if (mStepPagerStrip != null) {
+            mStepPagerStrip.setHasReview(mWizardModel.hasReviewPage());
             mStepPagerStrip.setOnPageSelectedListener(new StepPagerStrip.OnPageSelectedListener() {
 
                 @Override

@@ -49,9 +49,9 @@ public class SimpleFragment extends WizardFragment {
             if (imageResId != 0) {
                 ((ImageView) rootView.findViewById(R.id.image)).setImageResource(imageResId);
             }
-            int stringResId = ((SimplePage) mPage).getStringResId();
-            if (stringResId != 0) {
-                ((TextView) rootView.findViewById(R.id.text)).setText(stringResId);
+            String body = ((SimplePage) mPage).getBody();
+            if (body != null) {
+                ((TextView) rootView.findViewById(R.id.text)).setText(body);
             }
         }
         return rootView;

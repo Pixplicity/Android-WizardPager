@@ -25,8 +25,8 @@ public class SimplePage extends Page {
         return 0;
     }
 
-    public int getStringResId() {
-        return 0;
+    public String getBody() {
+        return null;
     }
 
 }

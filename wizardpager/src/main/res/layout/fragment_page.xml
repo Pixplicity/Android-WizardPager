@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.example.android.wizardpager.wizard.ui.BoundedLinearLayout
+    <com.pixplicity.wizardpager.wizard.ui.BoundedLinearLayout
         style="@style/WizardPageContainer"
         android:layout_gravity="center"
         app:bounded_width="@dimen/page_width_max" >
@@ -32,6 +32,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </ScrollView>
-    </com.example.android.wizardpager.wizard.ui.BoundedLinearLayout>
+    </com.pixplicity.wizardpager.wizard.ui.BoundedLinearLayout>
 
 </FrameLayout>

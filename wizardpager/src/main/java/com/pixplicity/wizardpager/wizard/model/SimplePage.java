@@ -7,7 +7,7 @@ import com.pixplicity.wizardpager.wizard.ui.WizardFragment;
 
 public class SimplePage extends Page {
 
-    protected SimplePage(ModelCallbacks callbacks, String title) {
+    public SimplePage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
     }
 

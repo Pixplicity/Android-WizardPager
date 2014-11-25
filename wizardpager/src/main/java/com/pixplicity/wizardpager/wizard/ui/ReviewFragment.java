@@ -125,9 +125,10 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
 
     public interface Callbacks {
 
-        AbstractWizardModel onGetModel();
+        public AbstractWizardModel onGetModel();
 
-        void onEditScreenAfterReview(String pageKey);
+        public void onEditScreenAfterReview(String pageKey);
+
     }
 
     private class ReviewAdapter extends BaseAdapter {

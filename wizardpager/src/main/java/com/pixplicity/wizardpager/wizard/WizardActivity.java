@@ -41,7 +41,7 @@ public abstract class WizardActivity extends FragmentActivity implements
     private List<Page> mCurrentPageSequence;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         mWizardModel = onCreateModel();
         super.onCreate(savedInstanceState);
 

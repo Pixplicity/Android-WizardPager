@@ -17,6 +17,7 @@ _sandbox
 out/
 bin/
 gen/
+build/
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -29,9 +30,11 @@ local.properties
 *.iml
 *.ipr
 *.iws
+.idea
 
 # Other build files
 project.properties
 ant.properties
 build.xml
 proguard-project.txt
+

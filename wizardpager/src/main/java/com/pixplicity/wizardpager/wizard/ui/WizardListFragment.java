@@ -38,6 +38,15 @@ public abstract class WizardListFragment extends WizardFragment {
         return rootView;
     }
 
+    @Override
+    public void notifyDataChanged() {
+        super.notifyDataChanged();
+        ListAdapter adapter = getAdapter();
+        if (!mListView.getAdapter().equals(adapter)) {
+            mListView.setAdapter(adapter);
+        }
+    }
+
     public abstract ListAdapter getAdapter();
 
     public abstract void onListItemClick(AdapterView<?> l, View view, int position, long id);

@@ -19,6 +19,7 @@ package com.pixplicity.wizardpager.wizard.model;
 import android.database.Cursor;
 import android.text.TextUtils;
 
+import com.pixplicity.wizardpager.wizard.ui.SingleChoiceCursorFragment;
 import com.pixplicity.wizardpager.wizard.ui.SingleChoiceFragment;
 import com.pixplicity.wizardpager.wizard.ui.WizardFragment;
 
@@ -26,14 +27,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * A page offering the user a number of mutually exclusive choices.
+ * A page offering the user a number of mutually exclusive choices from a {@link Cursor}.
  */
-public class SingleFixedChoiceCursorPage extends Page {
+public abstract class SingleFixedChoiceCursorPage extends Page {
 
     protected ArrayList<String> mChoices = new ArrayList<String>();
-    private Cursor cursor;
-    private String[] columnNames;
-    private int[] textViewIds;
+    private Cursor mCursor;
+    private SingleChoiceCursorFragment mFragment;
 
     public SingleFixedChoiceCursorPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
@@ -41,7 +41,8 @@ public class SingleFixedChoiceCursorPage extends Page {
 
     @Override
     public WizardFragment createFragment() {
-        return SingleChoiceFragment.create(getKey());
+        mFragment = SingleChoiceCursorFragment.create(getKey());
+        return mFragment;
     }
 
     public String getOptionAt(int position) {
@@ -73,15 +74,19 @@ public class SingleFixedChoiceCursorPage extends Page {
         return this;
     }
 
+    @Override
+    public void notifyDataChanged() {
+        if (mFragment != null) mFragment.notifyDataChanged();
+        super.notifyDataChanged();
+    }
+
     public Cursor getCursor() {
-        return cursor;
+        return mCursor;
     }
 
-    public String[] getColumnNames() {
-        return columnNames;
+    public void setCursor(Cursor cursor) {
+        this.mCursor = cursor;
     }
 
-    public int[] getTextViewIds() {
-        return textViewIds;
-    }
+    public abstract String getColumnName();
 }

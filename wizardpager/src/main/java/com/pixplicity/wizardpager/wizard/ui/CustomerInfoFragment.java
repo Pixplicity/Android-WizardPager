@@ -43,20 +43,23 @@ public class CustomerInfoFragment extends WizardFragment {
         return fragment;
     }
 
-    public CustomerInfoFragment() {}
+    public CustomerInfoFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
         ((TextView) rootView.findViewById(android.R.id.title)).setText(mPage.getTitle());
 
+        CustomerInfoPage customerInfoPage = (CustomerInfoPage) mPage;
+
         mNameView = (TextView) rootView.findViewById(R.id.your_name);
-        mNameView.setText(mPage.getData().getString(CustomerInfoPage.NAME_DATA_KEY));
+        mNameView.setText(customerInfoPage.getName());
 
         mEmailView = (TextView) rootView.findViewById(R.id.your_email);
-        mEmailView.setText(mPage.getData().getString(CustomerInfoPage.EMAIL_DATA_KEY));
+        mEmailView.setText(customerInfoPage.getEmail());
         return rootView;
     }
 
@@ -73,15 +76,17 @@ public class CustomerInfoFragment extends WizardFragment {
 
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1,
-                    int i2) {}
+                                          int i2) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                mPage.getData().putString(CustomerInfoPage.NAME_DATA_KEY,
-                        editable != null ? editable.toString() : null);
+                CustomerInfoPage customerInfoPage = (CustomerInfoPage) mPage;
+                customerInfoPage.setName(editable != null ? editable.toString() : null);
                 mPage.notifyDataChanged();
             }
         });
@@ -90,15 +95,17 @@ public class CustomerInfoFragment extends WizardFragment {
 
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1,
-                    int i2) {}
+                                          int i2) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                mPage.getData().putString(CustomerInfoPage.EMAIL_DATA_KEY,
-                        editable != null ? editable.toString() : null);
+                CustomerInfoPage customerInfoPage = (CustomerInfoPage) mPage;
+                customerInfoPage.setEmail(editable != null ? editable.toString() : null);
                 mPage.notifyDataChanged();
             }
         });

@@ -42,7 +42,7 @@ public abstract class WizardListFragment extends WizardFragment {
     public void notifyDataChanged() {
         super.notifyDataChanged();
         ListAdapter adapter = getAdapter();
-        if (!mListView.getAdapter().equals(adapter)) {
+        if (adapter == null || !adapter.equals(mListView.getAdapter())) {
             mListView.setAdapter(adapter);
         }
     }

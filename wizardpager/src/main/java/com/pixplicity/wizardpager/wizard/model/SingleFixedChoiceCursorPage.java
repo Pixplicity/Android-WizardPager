@@ -60,17 +60,12 @@ public abstract class SingleFixedChoiceCursorPage extends Page {
 
     @Override
     public boolean isCompleted() {
-        return !TextUtils.isEmpty(mData.getString(SIMPLE_DATA_KEY));
+        return mData.containsKey(SIMPLE_DATA_KEY);
     }
 
     public SingleFixedChoiceCursorPage setChoices(String... choices) {
         mChoices.clear();
         mChoices.addAll(Arrays.asList(choices));
-        return this;
-    }
-
-    public SingleFixedChoiceCursorPage setValue(String value) {
-        mData.putString(SIMPLE_DATA_KEY, value);
         return this;
     }
 
@@ -89,4 +84,13 @@ public abstract class SingleFixedChoiceCursorPage extends Page {
     }
 
     public abstract String getColumnName();
+
+    public long getValue() {
+        return mData.getLong(Page.SIMPLE_DATA_KEY);
+    }
+
+    public void setValue(long id) {
+        mData.putLong(Page.SIMPLE_DATA_KEY, id);
+    }
+
 }

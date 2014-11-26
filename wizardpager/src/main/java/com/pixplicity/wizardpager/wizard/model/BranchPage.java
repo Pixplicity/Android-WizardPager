@@ -121,12 +121,6 @@ public class BranchPage extends SingleFixedChoicePage {
         super.notifyDataChanged();
     }
 
-    @Override
-    public BranchPage setValue(String value) {
-        mData.putString(SIMPLE_DATA_KEY, value);
-        return this;
-    }
-
     private static class Branch {
         public String choice;
         public PageList childPageList;

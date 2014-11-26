@@ -16,10 +16,10 @@
 
 package com.pixplicity.wizardpager.wizard.model;
 
-import java.util.ArrayList;
-
 import com.pixplicity.wizardpager.wizard.ui.MultipleChoiceFragment;
 import com.pixplicity.wizardpager.wizard.ui.WizardFragment;
+
+import java.util.ArrayList;
 
 /**
  * A page offering the user a number of non-mutually exclusive choices.
@@ -57,4 +57,13 @@ public class MultipleFixedChoicePage extends SingleFixedChoicePage {
         ArrayList<String> selections = mData.getStringArrayList(Page.SIMPLE_DATA_KEY);
         return selections != null && selections.size() > 0;
     }
+
+    public ArrayList<String> getValues() {
+        return mData.getStringArrayList(Page.SIMPLE_DATA_KEY);
+    }
+
+    public void setValues(ArrayList<String> selections) {
+        mData.putStringArrayList(Page.SIMPLE_DATA_KEY, selections);
+    }
+
 }

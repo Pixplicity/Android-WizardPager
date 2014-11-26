@@ -16,9 +16,6 @@
 
 package com.pixplicity.wizardpager.wizard.ui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,8 +28,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pixplicity.wizardpager.R;
-import com.pixplicity.wizardpager.wizard.model.Page;
 import com.pixplicity.wizardpager.wizard.model.SingleFixedChoicePage;
+
+import java.util.ArrayList;
 
 public class SingleChoiceFragment extends WizardListFragment {
 
@@ -45,7 +43,8 @@ public class SingleChoiceFragment extends WizardListFragment {
         return fragment;
     }
 
-    public SingleChoiceFragment() {}
+    public SingleChoiceFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +59,7 @@ public class SingleChoiceFragment extends WizardListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
 
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -72,7 +71,8 @@ public class SingleChoiceFragment extends WizardListFragment {
 
             @Override
             public void run() {
-                String selection = mPage.getData().getString(Page.SIMPLE_DATA_KEY);
+                SingleFixedChoicePage fixedChoicePage = (SingleFixedChoicePage) mPage;
+                String selection = fixedChoicePage.getValue();
                 for (int i = 0; i < mChoices.size(); i++) {
                     if (mChoices.get(i).equals(selection)) {
                         mListView.setItemChecked(i, true);
@@ -117,8 +117,8 @@ public class SingleChoiceFragment extends WizardListFragment {
 
     @Override
     public void onListItemClick(AdapterView<?> l, View view, int position, long id) {
-        mPage.getData().putString(Page.SIMPLE_DATA_KEY,
-        mListView.getAdapter().getItem(position).toString());
+        SingleFixedChoicePage fixedChoicePage = (SingleFixedChoicePage) mPage;
+        fixedChoicePage.setValue(mListView.getAdapter().getItem(position).toString());
         mPage.notifyDataChanged();
     }
 

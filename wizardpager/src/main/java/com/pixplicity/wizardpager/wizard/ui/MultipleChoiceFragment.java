@@ -74,8 +74,8 @@ public class MultipleChoiceFragment extends WizardListFragment {
 
             @Override
             public void run() {
-                ArrayList<String> selectedItems = mPage.getData().getStringArrayList(
-                        Page.SIMPLE_DATA_KEY);
+                MultipleFixedChoicePage fixedChoicePage = (MultipleFixedChoicePage) mPage;
+                ArrayList<String> selectedItems = fixedChoicePage.getValues();
                 if (selectedItems == null || selectedItems.size() == 0) {
                     return;
                 }
@@ -117,7 +117,8 @@ public class MultipleChoiceFragment extends WizardListFragment {
             }
         }
 
-        mPage.getData().putStringArrayList(Page.SIMPLE_DATA_KEY, selections);
+        MultipleFixedChoicePage fixedChoicePage = (MultipleFixedChoicePage) mPage;
+        fixedChoicePage.setValues(selections);
         mPage.notifyDataChanged();
     }
 

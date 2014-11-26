@@ -28,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pixplicity.wizardpager.R;
 import com.pixplicity.wizardpager.wizard.model.Page;
@@ -74,13 +75,10 @@ public class SingleChoiceCursorFragment extends WizardListFragment {
 
             @Override
             public void run() {
-                String selection = mPage.getData().getString(Page.SIMPLE_DATA_KEY);
-                for (int i = 0; i < mChoices.size(); i++) {
-                    if (mChoices.get(i).equals(selection)) {
-                        mListView.setItemChecked(i, true);
-                        break;
-                    }
-                }
+                SingleFixedChoiceCursorPage fixedChoicePage = (SingleFixedChoiceCursorPage) mPage;
+                long selectionId = fixedChoicePage.getValue();
+                // TODO show selection
+                // FIXME write custom implementation of SimpleCursorLoader below
             }
         });
 
@@ -126,8 +124,9 @@ public class SingleChoiceCursorFragment extends WizardListFragment {
 
     @Override
     public void onListItemClick(AdapterView<?> l, View view, int position, long id) {
-        mPage.getData().putString(Page.SIMPLE_DATA_KEY,
-                mListView.getAdapter().getItem(position).toString());
+        SingleFixedChoiceCursorPage fixedChoicePage = (SingleFixedChoiceCursorPage) mPage;
+        fixedChoicePage.setValue(position);
+
         mPage.notifyDataChanged();
     }
 

@@ -63,8 +63,12 @@ public class SingleFixedChoicePage extends Page {
         return this;
     }
 
-    public SingleFixedChoicePage setValue(String value) {
-        mData.putString(SIMPLE_DATA_KEY, value);
-        return this;
+    public String getValue() {
+        return mData.getString(Page.SIMPLE_DATA_KEY);
     }
+
+    public void setValue(String value) {
+        mData.putString(SIMPLE_DATA_KEY, value);
+    }
+
 }

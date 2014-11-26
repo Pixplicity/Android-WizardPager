@@ -46,7 +46,7 @@ public abstract class Page implements PageTreeNode {
         mTitle = title;
     }
 
-    public Bundle getData() {
+    protected Bundle getData() {
         return mData;
     }
 
@@ -97,4 +97,5 @@ public abstract class Page implements PageTreeNode {
         mRequired = required;
         return this;
     }
+
 }

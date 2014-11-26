@@ -50,4 +50,21 @@ public class CustomerInfoPage extends Page {
     public boolean isCompleted() {
         return !TextUtils.isEmpty(mData.getString(NAME_DATA_KEY));
     }
+
+    public String getName() {
+        return getData().getString(CustomerInfoPage.NAME_DATA_KEY);
+    }
+
+    public String getEmail() {
+        return getData().getString(CustomerInfoPage.EMAIL_DATA_KEY);
+    }
+
+    public void setName(String name) {
+        getData().putString(CustomerInfoPage.NAME_DATA_KEY, name);
+    }
+
+    public void setEmail(String email) {
+        getData().putString(CustomerInfoPage.EMAIL_DATA_KEY, email);
+    }
+
 }

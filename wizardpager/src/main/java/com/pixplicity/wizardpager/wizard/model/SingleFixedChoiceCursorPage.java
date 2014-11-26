@@ -16,21 +16,26 @@
 
 package com.pixplicity.wizardpager.wizard.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
+import android.database.Cursor;
 import android.text.TextUtils;
 
 import com.pixplicity.wizardpager.wizard.ui.SingleChoiceFragment;
 import com.pixplicity.wizardpager.wizard.ui.WizardFragment;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * A page offering the user a number of mutually exclusive choices.
  */
-public class SingleFixedChoicePage extends Page {
+public class SingleFixedChoiceCursorPage extends Page {
 
     protected ArrayList<String> mChoices = new ArrayList<String>();
+    private Cursor cursor;
+    private String[] columnNames;
+    private int[] textViewIds;
 
-    public SingleFixedChoicePage(ModelCallbacks callbacks, String title) {
+    public SingleFixedChoiceCursorPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
     }
 
@@ -57,14 +62,26 @@ public class SingleFixedChoicePage extends Page {
         return !TextUtils.isEmpty(mData.getString(SIMPLE_DATA_KEY));
     }
 
-    public SingleFixedChoicePage setChoices(String... choices) {
+    public SingleFixedChoiceCursorPage setChoices(String... choices) {
         mChoices.clear();
         mChoices.addAll(Arrays.asList(choices));
         return this;
     }
 
-    public SingleFixedChoicePage setValue(String value) {
+    public SingleFixedChoiceCursorPage setValue(String value) {
         mData.putString(SIMPLE_DATA_KEY, value);
         return this;
+    }
+
+    public Cursor getCursor() {
+        return cursor;
+    }
+
+    public String[] getColumnNames() {
+        return columnNames;
+    }
+
+    public int[] getTextViewIds() {
+        return textViewIds;
     }
 }

@@ -29,6 +29,7 @@ import com.pixplicity.wizardpager.wizard.ui.WizardFragment;
  * next set of steps in the wizard may change.
  */
 public class BranchPage extends SingleFixedChoicePage {
+
     private final List<Branch> mBranches = new ArrayList<Branch>();
 
     public BranchPage(ModelCallbacks callbacks, String title) {
@@ -74,6 +75,19 @@ public class BranchPage extends SingleFixedChoicePage {
     public BranchPage addBranch(String choice) {
         mBranches.add(new Branch(choice, new PageList()));
         return this;
+    }
+
+    public void setBranch(int index, String choice, Page... childPages) {
+        Branch branch = mBranches.get(index);
+        if (branch == null) {
+            throw new IndexOutOfBoundsException("No branch specified for index " + index);
+        }
+        branch.choice = choice;
+        PageList childPageList = new PageList(childPages);
+        for (Page page : childPageList) {
+            page.setParentKey(choice);
+        }
+        branch.childPageList = childPageList;
     }
 
     @Override

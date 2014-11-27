@@ -21,6 +21,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,8 @@ import com.pixplicity.wizardpager.wizard.model.SingleFixedChoiceCursorPage;
 import java.util.ArrayList;
 
 public class SingleChoiceCursorFragment extends WizardListFragment {
+
+    private SingleChoiceCursorAdapter mSingleChoiceCursorAdapter;
 
     public static SingleChoiceCursorFragment create(String key) {
         Bundle args = new Bundle();
@@ -111,15 +114,18 @@ public class SingleChoiceCursorFragment extends WizardListFragment {
         SingleFixedChoiceCursorPage fixedChoicePage = (SingleFixedChoiceCursorPage) mPage;
         Cursor cursor = fixedChoicePage.getCursor();
         if (cursor == null) return null;
-        return new SingleChoiceCursorAdapter(getActivity(),
-                android.R.layout.simple_list_item_single_choice,
-                cursor,
-                new String[]{
-                        fixedChoicePage.getColumnName()
-                },
-                fixedChoicePage.getColumnIdName(),
-                new int[]{android.R.id.text1},
-                android.support.v4.widget.CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        if (mSingleChoiceCursorAdapter == null) {
+            mSingleChoiceCursorAdapter = new SingleChoiceCursorAdapter(getActivity(),
+                    android.R.layout.simple_list_item_single_choice,
+                    cursor,
+                    new String[]{
+                            fixedChoicePage.getColumnName()
+                    },
+                    fixedChoicePage.getColumnIdName(),
+                    new int[]{android.R.id.text1},
+                    CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        }
+        return mSingleChoiceCursorAdapter;
     }
 
     @Override

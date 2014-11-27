@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -44,6 +45,8 @@ public abstract class WizardListFragment extends WizardFragment {
         ListAdapter adapter = getAdapter();
         if (adapter == null || !adapter.equals(mListView.getAdapter())) {
             mListView.setAdapter(adapter);
+        } else if (adapter instanceof BaseAdapter) {
+            ((BaseAdapter) adapter).notifyDataSetChanged();
         }
     }
 

@@ -40,6 +40,10 @@ public abstract class WizardActivity extends FragmentActivity implements
 
     private List<Page> mCurrentPageSequence;
 
+    public List<Page> getCurrentPageSequence() {
+        return mCurrentPageSequence;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mWizardModel = onCreateModel();
@@ -185,6 +189,16 @@ public abstract class WizardActivity extends FragmentActivity implements
             mPager.setCurrentItem(mPagerAdapter.getCount() - 1);
         } else {
             mPager.setCurrentItem(mPager.getCurrentItem() + 1);
+        }
+        return true;
+    }
+
+    protected boolean onNavigateNext() {
+        if (mPager.getCurrentItem() == mCurrentPageSequence.size()
+                - (mWizardModel.hasReviewPage() ? 0 : 1)) {
+            onSubmit();
+        } else {
+            onNavigateNext(mEditingAfterReview);
         }
         return true;
     }

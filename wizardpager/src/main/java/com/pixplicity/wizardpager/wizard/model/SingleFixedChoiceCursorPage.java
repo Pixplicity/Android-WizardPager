@@ -84,6 +84,7 @@ public abstract class SingleFixedChoiceCursorPage extends Page {
     }
 
     public abstract String getColumnName();
+    public abstract String getColumnIdName();
 
     public long getValue() {
         return mData.getLong(Page.SIMPLE_DATA_KEY);

@@ -17,6 +17,7 @@
 package com.pixplicity.wizardpager.wizard.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,10 +29,8 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pixplicity.wizardpager.R;
-import com.pixplicity.wizardpager.wizard.model.Page;
 import com.pixplicity.wizardpager.wizard.model.SingleFixedChoiceCursorPage;
 
 import java.util.ArrayList;
@@ -112,12 +111,13 @@ public class SingleChoiceCursorFragment extends WizardListFragment {
         SingleFixedChoiceCursorPage fixedChoicePage = (SingleFixedChoiceCursorPage) mPage;
         Cursor cursor = fixedChoicePage.getCursor();
         if (cursor == null) return null;
-        return new SimpleCursorAdapter(getActivity(),
+        return new SingleChoiceCursorAdapter(getActivity(),
                 android.R.layout.simple_list_item_single_choice,
                 cursor,
                 new String[]{
                         fixedChoicePage.getColumnName()
                 },
+                fixedChoicePage.getColumnIdName(),
                 new int[]{android.R.id.text1},
                 android.support.v4.widget.CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
     }
@@ -125,9 +125,23 @@ public class SingleChoiceCursorFragment extends WizardListFragment {
     @Override
     public void onListItemClick(AdapterView<?> l, View view, int position, long id) {
         SingleFixedChoiceCursorPage fixedChoicePage = (SingleFixedChoiceCursorPage) mPage;
-        fixedChoicePage.setValue(position);
+        fixedChoicePage.setValue(id);
 
         mPage.notifyDataChanged();
     }
 
+    private class SingleChoiceCursorAdapter extends SimpleCursorAdapter {
+        private final String _columnIdName;
+
+        public SingleChoiceCursorAdapter(Context context, int layout, Cursor c, String[] from, String columnIdName, int[] to, int flags) {
+            super(context, layout, c, from, to, flags);
+            _columnIdName = columnIdName;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            mCursor.moveToPosition(position);
+            return mCursor.getLong(mCursor.getColumnIndex(_columnIdName));
+        }
+    }
 }

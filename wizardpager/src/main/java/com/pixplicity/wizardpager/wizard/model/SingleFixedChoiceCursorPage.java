@@ -79,6 +79,8 @@ public abstract class SingleFixedChoiceCursorPage extends Page {
 
     public void setCursor(Cursor cursor) {
         this.mCursor = cursor;
+        reset();
+        notifyDataChanged();
     }
 
     public abstract String getColumnNameValue();

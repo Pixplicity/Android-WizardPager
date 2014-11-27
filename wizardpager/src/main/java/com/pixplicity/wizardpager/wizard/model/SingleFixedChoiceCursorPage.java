@@ -17,6 +17,7 @@
 package com.pixplicity.wizardpager.wizard.model;
 
 import android.database.Cursor;
+import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.pixplicity.wizardpager.wizard.ui.SingleChoiceCursorFragment;
@@ -77,6 +78,10 @@ public abstract class SingleFixedChoiceCursorPage extends Page {
 
     public Cursor getCursor() {
         return mCursor;
+    }
+
+    public void invalidate() {
+        mData = new Bundle();
     }
 
     public void setCursor(Cursor cursor) {

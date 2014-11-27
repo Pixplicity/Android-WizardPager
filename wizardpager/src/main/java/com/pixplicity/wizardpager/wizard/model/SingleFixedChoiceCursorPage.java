@@ -103,7 +103,6 @@ public abstract class SingleFixedChoiceCursorPage extends Page {
                     name = mCursor.getString(mCursor.getColumnIndex(getColumnNameValue()));
                     break;
                 }
-                mCursor.moveToNext();
             }
             mCursor.moveToPosition(position);
         }

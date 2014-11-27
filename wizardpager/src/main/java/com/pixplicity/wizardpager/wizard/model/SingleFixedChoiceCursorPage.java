@@ -73,7 +73,7 @@ public abstract class SingleFixedChoiceCursorPage extends Page {
         return mCursor;
     }
 
-    public void invalidate() {
+    public void reset() {
         mData = new Bundle();
     }
 

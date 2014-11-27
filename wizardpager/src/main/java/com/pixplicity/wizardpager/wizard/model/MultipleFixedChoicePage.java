@@ -36,23 +36,6 @@ public class MultipleFixedChoicePage extends SingleFixedChoicePage {
     }
 
     @Override
-    public void getReviewItems(ArrayList<ReviewItem> dest) {
-        StringBuilder sb = new StringBuilder();
-
-        ArrayList<String> selections = mData.getStringArrayList(Page.SIMPLE_DATA_KEY);
-        if (selections != null && selections.size() > 0) {
-            for (String selection : selections) {
-                if (sb.length() > 0) {
-                    sb.append(", ");
-                }
-                sb.append(selection);
-            }
-        }
-
-        dest.add(new ReviewItem(getTitle(), sb.toString(), getKey()));
-    }
-
-    @Override
     public boolean isCompleted() {
         ArrayList<String> selections = mData.getStringArrayList(Page.SIMPLE_DATA_KEY);
         return selections != null && selections.size() > 0;
@@ -64,6 +47,20 @@ public class MultipleFixedChoicePage extends SingleFixedChoicePage {
 
     public void setValues(ArrayList<String> selections) {
         mData.putStringArrayList(Page.SIMPLE_DATA_KEY, selections);
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        ArrayList<String> selections = mData.getStringArrayList(Page.SIMPLE_DATA_KEY);
+        if (selections != null && selections.size() > 0) {
+            for (String selection : selections) {
+                if (sb.length() > 0) {
+                    sb.append(", ");
+                }
+                sb.append(selection);
+            }
+        }
+        return sb.toString();
     }
 
 }

@@ -110,31 +110,27 @@ public class SingleChoiceCursorFragment extends WizardListFragment {
     }
 
     @Override
+    public void notifyDataChanged() {
+        super.notifyDataChanged();
+        if (mSingleChoiceCursorAdapter != null) {
+            final SingleFixedChoiceCursorPage fixedChoicePage = (SingleFixedChoiceCursorPage) mPage;
+            mSingleChoiceCursorAdapter.setCurrentSelectionId(fixedChoicePage.getValue());
+        }
+    }
+
+    @Override
     public ListAdapter getAdapter() {
         final SingleFixedChoiceCursorPage fixedChoicePage = (SingleFixedChoiceCursorPage) mPage;
         Cursor cursor = fixedChoicePage.getCursor();
         if (cursor == null) {
             mSingleChoiceCursorAdapter = null;
         } else if (mSingleChoiceCursorAdapter == null) {
-            final int columnIndex = cursor.getColumnIndex(fixedChoicePage.getColumnIdName());
             mSingleChoiceCursorAdapter = new SingleChoiceCursorAdapter(getActivity(),
-                    android.R.layout.simple_list_item_single_choice,
                     cursor,
-                    new String[]{
-                            fixedChoicePage.getColumnName()
-                    },
-                    fixedChoicePage.getColumnIdName(),
-                    new int[]{android.R.id.text1},
-                    CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER) {
-                @Override
-                public void bindView(View view, Context context, Cursor cursor) {
-                    super.bindView(view, context, cursor);
-                    int i = cursor.getPosition();
-                    long id = cursor.getLong(columnIndex);
-                    long selectionId = fixedChoicePage.getValue();
-                    mListView.setItemChecked(i, selectionId == id);
-                }
-            };
+                    fixedChoicePage.getColumnNameId(),
+                    fixedChoicePage.getColumnNameValue(),
+                    fixedChoicePage.getValue(),
+                    CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
         }
         return mSingleChoiceCursorAdapter;
     }
@@ -148,17 +144,40 @@ public class SingleChoiceCursorFragment extends WizardListFragment {
     }
 
     private class SingleChoiceCursorAdapter extends SimpleCursorAdapter {
-        private final String _columnIdName;
+        private final String mColumnNameId, mColumnNameValue;
+        private long mCurrentSelectionId;
 
-        public SingleChoiceCursorAdapter(Context context, int layout, Cursor c, String[] from, String columnIdName, int[] to, int flags) {
-            super(context, layout, c, from, to, flags);
-            _columnIdName = columnIdName;
+        public SingleChoiceCursorAdapter(Context context, Cursor c, String columnNameId, String columnNameValue, long currentSelectionId, int flags) {
+            super(context, android.R.layout.simple_list_item_single_choice, c, new String[]{
+                    columnNameValue
+            }, new int[]{android.R.id.text1}, flags);
+            mColumnNameId = columnNameId;
+            mColumnNameValue = columnNameValue;
+            mCurrentSelectionId = currentSelectionId;
+        }
+
+        public void setCurrentSelectionId(long currentSelectionId) {
+            mCurrentSelectionId = currentSelectionId;
         }
 
         @Override
         public long getItemId(int position) {
             mCursor.moveToPosition(position);
-            return mCursor.getLong(mCursor.getColumnIndex(_columnIdName));
+            return mCursor.getLong(mCursor.getColumnIndex(mColumnNameId));
         }
+
+        public String getItemValue(int position) {
+            mCursor.moveToPosition(position);
+            return mCursor.getString(mCursor.getColumnIndex(mColumnNameValue));
+        }
+
+        @Override
+        public void bindView(View view, Context context, Cursor cursor) {
+            super.bindView(view, context, cursor);
+            int i = cursor.getPosition();
+            long id = getItemId(i);
+            mListView.setItemChecked(i, mCurrentSelectionId == id);
+        }
+
     }
 }

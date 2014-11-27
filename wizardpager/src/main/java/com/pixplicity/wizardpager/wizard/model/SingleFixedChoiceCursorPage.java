@@ -53,11 +53,6 @@ public abstract class SingleFixedChoiceCursorPage extends Page {
     }
 
     @Override
-    public void getReviewItems(ArrayList<ReviewItem> dest) {
-        dest.add(new ReviewItem(getTitle(), mData.getString(SIMPLE_DATA_KEY), getKey()));
-    }
-
-    @Override
     public boolean isCompleted() {
         return mData.containsKey(SIMPLE_DATA_KEY);
     }
@@ -86,9 +81,9 @@ public abstract class SingleFixedChoiceCursorPage extends Page {
         this.mCursor = cursor;
     }
 
-    public abstract String getColumnName();
+    public abstract String getColumnNameValue();
 
-    public abstract String getColumnIdName();
+    public abstract String getColumnNameId();
 
     public long getValue() {
         return mData.getLong(Page.SIMPLE_DATA_KEY);
@@ -96,6 +91,22 @@ public abstract class SingleFixedChoiceCursorPage extends Page {
 
     public void setValue(long id) {
         mData.putLong(Page.SIMPLE_DATA_KEY, id);
+    }
+
+    public String toString() {
+        String name = null;
+        if (mCursor != null) {
+            int position = mCursor.getPosition();
+            mCursor.moveToFirst();
+            while (mCursor.moveToNext()) {
+                if (mCursor.getLong(mCursor.getColumnIndex(getColumnNameId())) == getValue()) {
+                    name = mCursor.getString(mCursor.getColumnIndex(getColumnNameValue()));
+                    break;
+                }
+            }
+            mCursor.moveToPosition(position);
+        }
+        return name;
     }
 
 }

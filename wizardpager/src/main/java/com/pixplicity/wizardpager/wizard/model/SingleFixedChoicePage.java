@@ -48,11 +48,6 @@ public class SingleFixedChoicePage extends Page {
     }
 
     @Override
-    public void getReviewItems(ArrayList<ReviewItem> dest) {
-        dest.add(new ReviewItem(getTitle(), mData.getString(SIMPLE_DATA_KEY), getKey()));
-    }
-
-    @Override
     public boolean isCompleted() {
         return !TextUtils.isEmpty(mData.getString(SIMPLE_DATA_KEY));
     }
@@ -69,6 +64,10 @@ public class SingleFixedChoicePage extends Page {
 
     public void setValue(String value) {
         mData.putString(SIMPLE_DATA_KEY, value);
+    }
+
+    public String toString() {
+        return mData.getString(SIMPLE_DATA_KEY);
     }
 
 }

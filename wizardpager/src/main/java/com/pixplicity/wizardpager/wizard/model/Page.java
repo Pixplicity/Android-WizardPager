@@ -78,7 +78,9 @@ public abstract class Page implements PageTreeNode {
         return mParentKey != null ? mParentKey + ":" + mTitle : mTitle;
     }
 
-    public abstract void getReviewItems(ArrayList<ReviewItem> dest);
+    public void getReviewItems(ArrayList<ReviewItem> dest) {
+        dest.add(new ReviewItem(getTitle(), toString(), getKey()));
+    }
 
     public boolean isCompleted() {
         return true;
@@ -96,6 +98,10 @@ public abstract class Page implements PageTreeNode {
     public Page setRequired(boolean required) {
         mRequired = required;
         return this;
+    }
+
+    public String toString() {
+        return mData.getString(SIMPLE_DATA_KEY);
     }
 
 }

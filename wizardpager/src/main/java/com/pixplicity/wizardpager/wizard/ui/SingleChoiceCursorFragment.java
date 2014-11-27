@@ -111,10 +111,12 @@ public class SingleChoiceCursorFragment extends WizardListFragment {
 
     @Override
     public ListAdapter getAdapter() {
-        SingleFixedChoiceCursorPage fixedChoicePage = (SingleFixedChoiceCursorPage) mPage;
+        final SingleFixedChoiceCursorPage fixedChoicePage = (SingleFixedChoiceCursorPage) mPage;
         Cursor cursor = fixedChoicePage.getCursor();
-        if (cursor == null) return null;
-        if (mSingleChoiceCursorAdapter == null) {
+        if (cursor == null) {
+            mSingleChoiceCursorAdapter = null;
+        } else if (mSingleChoiceCursorAdapter == null) {
+            final int columnIndex = cursor.getColumnIndex(fixedChoicePage.getColumnIdName());
             mSingleChoiceCursorAdapter = new SingleChoiceCursorAdapter(getActivity(),
                     android.R.layout.simple_list_item_single_choice,
                     cursor,
@@ -123,7 +125,16 @@ public class SingleChoiceCursorFragment extends WizardListFragment {
                     },
                     fixedChoicePage.getColumnIdName(),
                     new int[]{android.R.id.text1},
-                    CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+                    CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER) {
+                @Override
+                public void bindView(View view, Context context, Cursor cursor) {
+                    super.bindView(view, context, cursor);
+                    int i = cursor.getPosition();
+                    long id = cursor.getLong(columnIndex);
+                    long selectionId = fixedChoicePage.getValue();
+                    mListView.setItemChecked(i, selectionId == id);
+                }
+            };
         }
         return mSingleChoiceCursorAdapter;
     }

@@ -18,10 +18,8 @@ package com.pixplicity.wizardpager.wizard.model;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.text.TextUtils;
 
 import com.pixplicity.wizardpager.wizard.ui.SingleChoiceCursorFragment;
-import com.pixplicity.wizardpager.wizard.ui.SingleChoiceFragment;
 import com.pixplicity.wizardpager.wizard.ui.WizardFragment;
 
 import java.util.ArrayList;
@@ -89,6 +87,7 @@ public abstract class SingleFixedChoiceCursorPage extends Page {
     }
 
     public abstract String getColumnName();
+
     public abstract String getColumnIdName();
 
     public long getValue() {

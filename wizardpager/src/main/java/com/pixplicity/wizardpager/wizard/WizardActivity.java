@@ -1,7 +1,5 @@
 package com.pixplicity.wizardpager.wizard;
 
-import java.util.List;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -21,6 +19,8 @@ import com.pixplicity.wizardpager.wizard.ui.PageFragmentCallbacks;
 import com.pixplicity.wizardpager.wizard.ui.ReviewFragment;
 import com.pixplicity.wizardpager.wizard.ui.StepPagerStrip;
 import com.pixplicity.wizardpager.wizard.ui.WizardFragment;
+
+import java.util.List;
 
 public abstract class WizardActivity extends FragmentActivity implements
         PageFragmentCallbacks,
@@ -73,7 +73,7 @@ public abstract class WizardActivity extends FragmentActivity implements
     }
 
     protected void setControls(ViewPager pager, StepPagerStrip stepPagerStrip, Button nextButton,
-            Button prevButton) {
+                               Button prevButton) {
         mPager = pager;
         mStepPagerStrip = stepPagerStrip;
         mNextButton = nextButton;
@@ -286,8 +286,10 @@ public abstract class WizardActivity extends FragmentActivity implements
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            WizardFragment fragment = (WizardFragment) super.instantiateItem(container, position);
-            mCurrentPageSequence.get(position).setFragment(fragment);
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+            if (fragment instanceof WizardFragment) {
+                mCurrentPageSequence.get(position).setFragment((WizardFragment) fragment);
+            }
             return fragment;
         }
 

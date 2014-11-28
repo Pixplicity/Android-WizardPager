@@ -20,6 +20,7 @@ import com.pixplicity.wizardpager.wizard.model.Page;
 import com.pixplicity.wizardpager.wizard.ui.PageFragmentCallbacks;
 import com.pixplicity.wizardpager.wizard.ui.ReviewFragment;
 import com.pixplicity.wizardpager.wizard.ui.StepPagerStrip;
+import com.pixplicity.wizardpager.wizard.ui.WizardFragment;
 
 public abstract class WizardActivity extends FragmentActivity implements
         PageFragmentCallbacks,
@@ -284,12 +285,22 @@ public abstract class WizardActivity extends FragmentActivity implements
         }
 
         @Override
-        public Fragment getItem(int i) {
-            if (i >= mCurrentPageSequence.size() && mWizardModel.hasReviewPage()) {
-                return new ReviewFragment();
-            }
+        public Object instantiateItem(ViewGroup container, int position) {
+            WizardFragment fragment = (WizardFragment) super.instantiateItem(container, position);
+            mCurrentPageSequence.get(position).setFragment(fragment);
+            return fragment;
+        }
 
-            return mCurrentPageSequence.get(i).createFragment();
+        @Override
+        public Fragment getItem(int i) {
+            Fragment fragment;
+            if (i >= mCurrentPageSequence.size() && mWizardModel.hasReviewPage()) {
+                fragment = new ReviewFragment();
+            } else {
+                fragment = mCurrentPageSequence.get(i).createFragment();
+                mCurrentPageSequence.get(i).setFragment((WizardFragment) fragment);
+            }
+            return fragment;
         }
 
         @Override
@@ -299,7 +310,6 @@ public abstract class WizardActivity extends FragmentActivity implements
                 // Re-use the current fragment (its position never changes)
                 return POSITION_UNCHANGED;
             }
-
             return POSITION_NONE;
         }
 

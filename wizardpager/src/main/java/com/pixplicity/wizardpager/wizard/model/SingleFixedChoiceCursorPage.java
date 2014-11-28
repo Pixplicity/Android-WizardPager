@@ -32,7 +32,6 @@ public abstract class SingleFixedChoiceCursorPage extends Page {
 
     protected ArrayList<String> mChoices = new ArrayList<String>();
     private Cursor mCursor;
-    private SingleChoiceCursorFragment mFragment;
 
     public SingleFixedChoiceCursorPage(ModelCallbacks callbacks, String title) {
         super(callbacks, title);
@@ -40,8 +39,7 @@ public abstract class SingleFixedChoiceCursorPage extends Page {
 
     @Override
     public WizardFragment createFragment() {
-        mFragment = SingleChoiceCursorFragment.create(getKey());
-        return mFragment;
+        return SingleChoiceCursorFragment.create(getKey());
     }
 
     public String getOptionAt(int position) {
@@ -65,6 +63,7 @@ public abstract class SingleFixedChoiceCursorPage extends Page {
 
     @Override
     public void notifyDataChanged() {
+//        SingleChoiceCursorFragment mFragment = getFragment();
         if (mFragment != null) mFragment.notifyDataChanged();
         super.notifyDataChanged();
     }

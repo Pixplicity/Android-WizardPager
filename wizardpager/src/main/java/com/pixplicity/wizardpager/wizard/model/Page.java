@@ -19,7 +19,9 @@ package com.pixplicity.wizardpager.wizard.model;
 import java.util.ArrayList;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
+import com.pixplicity.wizardpager.wizard.ui.SingleChoiceCursorFragment;
 import com.pixplicity.wizardpager.wizard.ui.WizardFragment;
 
 /**
@@ -40,6 +42,8 @@ public abstract class Page implements PageTreeNode {
     protected String mTitle;
     protected boolean mRequired = false;
     protected String mParentKey;
+
+    protected WizardFragment mFragment;
 
     protected Page(ModelCallbacks callbacks, String title) {
         mCallbacks = callbacks;
@@ -73,6 +77,10 @@ public abstract class Page implements PageTreeNode {
     }
 
     public abstract WizardFragment createFragment();
+
+    public void setFragment(WizardFragment fragment) {
+        mFragment = fragment;
+    }
 
     public String getKey() {
         return mParentKey != null ? mParentKey + ":" + mTitle : mTitle;

@@ -160,6 +160,7 @@ public class SingleChoiceCursorFragment extends WizardListFragment {
 
         public void setCurrentSelectionId(long currentSelectionId) {
             mCurrentSelectionId = currentSelectionId;
+            notifyDataSetChanged();
         }
 
         @Override

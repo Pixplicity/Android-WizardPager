@@ -77,8 +77,11 @@ public abstract class SingleFixedChoiceCursorPage extends Page {
     }
 
     public void setCursor(Cursor cursor) {
-        this.mCursor = cursor;
-        reset();
+        if (mCursor != null && !mCursor.equals(cursor)) {
+            // Reset only if we had a different cusror
+            reset();
+        }
+        mCursor = cursor;
         notifyDataChanged(false);
     }
 

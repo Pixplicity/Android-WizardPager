@@ -50,10 +50,6 @@ public abstract class WizardActivity extends FragmentActivity implements
         mWizardModel = onCreateModel();
         super.onCreate(savedInstanceState);
 
-        if (savedInstanceState != null) {
-            mWizardModel.load(savedInstanceState.getBundle("model"));
-        }
-
         mWizardModel.registerListener(this);
     }
 
@@ -73,9 +69,17 @@ public abstract class WizardActivity extends FragmentActivity implements
     }
 
     @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mWizardModel.load(savedInstanceState.getBundle("model"));
+        }
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         outState.putBundle("model", mWizardModel.save());
+        super.onSaveInstanceState(outState);
     }
 
     @Override

@@ -119,7 +119,7 @@ public class SingleChoiceFragment extends WizardListFragment {
     public void onListItemClick(AdapterView<?> l, View view, int position, long id) {
         SingleFixedChoicePage fixedChoicePage = (SingleFixedChoicePage) mPage;
         fixedChoicePage.setValue(mListView.getAdapter().getItem(position).toString());
-        mPage.notifyDataChanged();
+        mPage.notifyDataChanged(true);
     }
 
 }

@@ -87,7 +87,7 @@ public class CustomerInfoFragment extends WizardFragment {
             public void afterTextChanged(Editable editable) {
                 CustomerInfoPage customerInfoPage = (CustomerInfoPage) mPage;
                 customerInfoPage.setName(editable != null ? editable.toString() : null);
-                mPage.notifyDataChanged();
+                mPage.notifyDataChanged(true);
             }
         });
 
@@ -106,7 +106,7 @@ public class CustomerInfoFragment extends WizardFragment {
             public void afterTextChanged(Editable editable) {
                 CustomerInfoPage customerInfoPage = (CustomerInfoPage) mPage;
                 customerInfoPage.setEmail(editable != null ? editable.toString() : null);
-                mPage.notifyDataChanged();
+                mPage.notifyDataChanged(true);
             }
         });
     }

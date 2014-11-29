@@ -72,6 +72,19 @@ public abstract class WizardActivity extends FragmentActivity implements
         mWizardModel.unregisterListener(this);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBundle("model", mWizardModel.save());
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!useBackForPrevious() || !onNavigatePrevious()) {
+            super.onBackPressed();
+        }
+    }
+
     protected void setControls(ViewPager pager, StepPagerStrip stepPagerStrip, Button nextButton,
                                Button prevButton) {
         mPager = pager;
@@ -204,19 +217,6 @@ public abstract class WizardActivity extends FragmentActivity implements
         return true;
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBundle("model", mWizardModel.save());
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (!useBackForPrevious() || !onNavigatePrevious()) {
-            super.onBackPressed();
-        }
-    }
-
     public abstract AbstractWizardModel onCreateModel();
 
     public abstract void onSubmit();
@@ -242,7 +242,7 @@ public abstract class WizardActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onPageDataChanged(Page page) {
+    public void onPageDataChanged(Page page, boolean byUser) {
         if (page.isRequired()) {
             if (recalculateCutOffPage()) {
                 mPagerAdapter.notifyDataSetChanged();

@@ -111,9 +111,9 @@ public class BranchPage extends SingleFixedChoicePage {
     }
 
     @Override
-    public void notifyDataChanged() {
+    public void notifyDataChanged(boolean byUser) {
         mCallbacks.onPageTreeChanged();
-        super.notifyDataChanged();
+        super.notifyDataChanged(byUser);
     }
 
     private static class Branch {

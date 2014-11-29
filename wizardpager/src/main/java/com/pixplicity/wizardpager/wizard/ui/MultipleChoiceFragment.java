@@ -119,7 +119,7 @@ public class MultipleChoiceFragment extends WizardListFragment {
 
         MultipleFixedChoicePage fixedChoicePage = (MultipleFixedChoicePage) mPage;
         fixedChoicePage.setValues(selections);
-        mPage.notifyDataChanged();
+        mPage.notifyDataChanged(true);
     }
 
 }

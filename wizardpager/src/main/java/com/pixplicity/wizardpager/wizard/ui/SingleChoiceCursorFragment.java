@@ -21,6 +21,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
@@ -122,10 +123,11 @@ public class SingleChoiceCursorFragment extends WizardListFragment {
     public ListAdapter getAdapter() {
         final SingleFixedChoiceCursorPage fixedChoicePage = (SingleFixedChoiceCursorPage) mPage;
         Cursor cursor = fixedChoicePage.getCursor();
-        if (cursor == null) {
+        FragmentActivity activity = getActivity();
+        if (cursor == null || activity == null) {
             mSingleChoiceCursorAdapter = null;
         } else if (mSingleChoiceCursorAdapter == null) {
-            mSingleChoiceCursorAdapter = new SingleChoiceCursorAdapter(getActivity(),
+            mSingleChoiceCursorAdapter = new SingleChoiceCursorAdapter(activity,
                     cursor,
                     fixedChoicePage.getColumnNameId(),
                     fixedChoicePage.getColumnNameValue(),
@@ -140,7 +142,7 @@ public class SingleChoiceCursorFragment extends WizardListFragment {
         SingleFixedChoiceCursorPage fixedChoicePage = (SingleFixedChoiceCursorPage) mPage;
         fixedChoicePage.setValue(id);
 
-        mPage.notifyDataChanged();
+        mPage.notifyDataChanged(true);
     }
 
     private class SingleChoiceCursorAdapter extends SimpleCursorAdapter {

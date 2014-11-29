@@ -62,10 +62,10 @@ public abstract class SingleFixedChoiceCursorPage extends Page {
     }
 
     @Override
-    public void notifyDataChanged() {
+    public void notifyDataChanged(boolean byUser) {
 //        SingleChoiceCursorFragment mFragment = getFragment();
         if (mFragment != null) mFragment.notifyDataChanged();
-        super.notifyDataChanged();
+        super.notifyDataChanged(byUser);
     }
 
     public Cursor getCursor() {
@@ -79,7 +79,7 @@ public abstract class SingleFixedChoiceCursorPage extends Page {
     public void setCursor(Cursor cursor) {
         this.mCursor = cursor;
         reset();
-        notifyDataChanged();
+        notifyDataChanged(false);
     }
 
     public abstract String getColumnNameValue();

@@ -16,11 +16,6 @@
 
 package com.pixplicity.wizardpager.wizard.ui;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -38,6 +33,11 @@ import com.pixplicity.wizardpager.wizard.model.ModelCallbacks;
 import com.pixplicity.wizardpager.wizard.model.Page;
 import com.pixplicity.wizardpager.wizard.model.ReviewItem;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 public class ReviewFragment extends ListFragment implements ModelCallbacks {
 
     private Callbacks mCallbacks;
@@ -46,7 +46,8 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
 
     private ReviewAdapter mReviewAdapter;
 
-    public ReviewFragment() {}
+    public ReviewFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_page_list, container, false);
 
@@ -87,7 +88,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
 
     @Override
     public void onPageTreeChanged() {
-        onPageDataChanged(null);
+        onPageDataChanged(null, false);
     }
 
     @Override
@@ -99,7 +100,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
     }
 
     @Override
-    public void onPageDataChanged(Page changedPage) {
+    public void onPageDataChanged(Page changedPage, boolean byUser) {
         ArrayList<ReviewItem> reviewItems = new ArrayList<ReviewItem>();
         for (Page page : mWizardModel.getCurrentPageSequence()) {
             page.getReviewItems(reviewItems);

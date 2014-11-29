@@ -45,11 +45,11 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
     protected abstract PageList onNewRootPageList();
 
     @Override
-    public void onPageDataChanged(Page page) {
+    public void onPageDataChanged(Page page, boolean byUser) {
         // can't use for each because of concurrent modification (review fragment
         // can get added or removed and will register itself as a listener)
         for (int i = 0; i < mListeners.size(); i++) {
-            mListeners.get(i).onPageDataChanged(page);
+            mListeners.get(i).onPageDataChanged(page, byUser);
         }
     }
 

@@ -96,11 +96,11 @@ public abstract class Page implements PageTreeNode {
 
     public void resetData(Bundle data) {
         mData = data;
-        notifyDataChanged();
+        notifyDataChanged(false);
     }
 
-    public void notifyDataChanged() {
-        mCallbacks.onPageDataChanged(this);
+    public void notifyDataChanged(boolean byUser) {
+        mCallbacks.onPageDataChanged(this, byUser);
     }
 
     public Page setRequired(boolean required) {

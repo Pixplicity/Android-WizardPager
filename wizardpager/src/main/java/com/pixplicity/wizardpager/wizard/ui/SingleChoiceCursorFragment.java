@@ -113,7 +113,7 @@ public class SingleChoiceCursorFragment extends WizardListFragment {
     @Override
     public void notifyDataChanged() {
         super.notifyDataChanged();
-        if (mSingleChoiceCursorAdapter != null) {
+        if (getAdapter() != null) {
             final SingleFixedChoiceCursorPage fixedChoicePage = (SingleFixedChoiceCursorPage) mPage;
             mSingleChoiceCursorAdapter.setCurrentSelectionId(fixedChoicePage.getValue());
         }
@@ -133,6 +133,8 @@ public class SingleChoiceCursorFragment extends WizardListFragment {
                     fixedChoicePage.getColumnNameValue(),
                     fixedChoicePage.getValue(),
                     CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+        } else {
+            mSingleChoiceCursorAdapter.swapCursor(cursor);
         }
         return mSingleChoiceCursorAdapter;
     }

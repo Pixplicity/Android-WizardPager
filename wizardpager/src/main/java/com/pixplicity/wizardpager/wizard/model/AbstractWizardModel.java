@@ -21,6 +21,9 @@ import java.util.List;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+
+import com.pixplicity.wizardpager.wizard.ui.ReviewFragment;
 
 /**
  * Represents a wizard model, including the pages/steps in the wizard, their dependencies, and their
@@ -101,6 +104,10 @@ public abstract class AbstractWizardModel implements ModelCallbacks {
 
     public boolean hasReviewPage() {
         return true;
+    }
+
+    public Fragment getReviewFragment() {
+        return new ReviewFragment();
     }
 
 }

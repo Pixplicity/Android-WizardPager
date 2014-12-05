@@ -40,11 +40,13 @@ import java.util.List;
 
 public class ReviewFragment extends ListFragment implements ModelCallbacks {
 
-    private Callbacks mCallbacks;
-    private AbstractWizardModel mWizardModel;
-    private List<ReviewItem> mCurrentReviewItems;
+    protected Callbacks mCallbacks;
 
-    private ReviewAdapter mReviewAdapter;
+    protected List<ReviewItem> mCurrentReviewItems;
+
+    protected ReviewAdapter mReviewAdapter;
+
+    protected AbstractWizardModel mWizardModel;
 
     public ReviewFragment() {
     }
@@ -59,6 +61,10 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        return getView(inflater, container);
+    }
+
+    public View getView(LayoutInflater inflater, ViewGroup container) {
         View rootView = inflater.inflate(R.layout.fragment_page_list, container, false);
 
         TextView titleView = (TextView) rootView.findViewById(android.R.id.title);

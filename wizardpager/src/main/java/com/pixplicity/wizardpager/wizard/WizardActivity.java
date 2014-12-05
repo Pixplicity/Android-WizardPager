@@ -301,7 +301,7 @@ public abstract class WizardActivity extends FragmentActivity implements
         public Fragment getItem(int i) {
             Fragment fragment;
             if (i >= mCurrentPageSequence.size() && mWizardModel.hasReviewPage()) {
-                fragment = new ReviewFragment();
+                fragment = mWizardModel.getReviewFragment();
             } else {
                 fragment = mCurrentPageSequence.get(i).createFragment();
                 mCurrentPageSequence.get(i).setFragment((WizardFragment) fragment);

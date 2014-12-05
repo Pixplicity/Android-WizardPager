@@ -81,7 +81,6 @@ public class SingleChoiceCursorFragment extends WizardListFragment {
                 SingleFixedChoiceCursorPage fixedChoicePage = (SingleFixedChoiceCursorPage) mPage;
                 long selectionId = fixedChoicePage.getValue();
                 // TODO show selection
-                // FIXME write custom implementation of SimpleCursorLoader below
             }
         });
 

@@ -40,6 +40,7 @@ public abstract class WizardActivity extends FragmentActivity implements
     private boolean mConsumePageSelectedEvent;
 
     private List<Page> mCurrentPageSequence;
+    private boolean mMaySubmit = true;
 
     public List<Page> getCurrentPageSequence() {
         return mCurrentPageSequence;
@@ -133,8 +134,7 @@ public abstract class WizardActivity extends FragmentActivity implements
 
                 @Override
                 public void onClick(View view) {
-                    if (mPager.getCurrentItem() == mCurrentPageSequence.size()
-                            - (mWizardModel.hasReviewPage() ? 0 : 1)) {
+                    if (isFinalPage(mPager.getCurrentItem())) {
                         onSubmit();
                     } else {
                         onNavigateNext(mEditingAfterReview);
@@ -168,7 +168,7 @@ public abstract class WizardActivity extends FragmentActivity implements
 
     private void updateControls() {
         int position = mPager.getCurrentItem();
-        if (position == mCurrentPageSequence.size() - (mWizardModel.hasReviewPage() ? 0 : 1)) {
+        if (isFinalPage(position)) {
             onPageShow(position, true);
         } else {
             onPageShow(position, false);
@@ -177,11 +177,22 @@ public abstract class WizardActivity extends FragmentActivity implements
         mPrevButton.setVisibility(position <= 0 ? View.INVISIBLE : View.VISIBLE);
     }
 
+    private boolean isFinalPage(int position) {
+        return position == mCurrentPageSequence.size() - (mWizardModel.hasReviewPage() ? 0 : 1);
+    }
+
+    private void updateControlSubmit() {
+        if (isFinalPage(mPager.getCurrentItem())) {
+            mNextButton.setEnabled(mMaySubmit);
+        }
+    }
+
     protected void onPageShow(int position, boolean finalPage) {
         if (finalPage) {
             // Submit button for review step
             mNextButton.setText(R.string.wizard_finish);
             mNextButton.setTextAppearance(this, R.style.TextAppearanceFinish);
+            mNextButton.setBackgroundColor(getResources().getColor(R.color.submit_background));
         } else {
             // Next button for any other step
             mNextButton.setText(mEditingAfterReview
@@ -191,7 +202,9 @@ public abstract class WizardActivity extends FragmentActivity implements
             getTheme().resolveAttribute(android.R.attr.textAppearanceMedium, v, true);
             mNextButton.setTextAppearance(this, v.resourceId);
             mNextButton.setEnabled(position != mPagerAdapter.getCutOffPage());
+            mNextButton.setBackgroundColor(0);
         }
+        updateControlSubmit();
     }
 
     protected boolean onNavigatePrevious() {
@@ -212,8 +225,7 @@ public abstract class WizardActivity extends FragmentActivity implements
     }
 
     protected boolean onNavigateNext() {
-        if (mPager.getCurrentItem() == mCurrentPageSequence.size()
-                - (mWizardModel.hasReviewPage() ? 0 : 1)) {
+        if (isFinalPage(mPager.getCurrentItem())) {
             onSubmit();
         } else {
             onNavigateNext(mEditingAfterReview);
@@ -222,6 +234,10 @@ public abstract class WizardActivity extends FragmentActivity implements
     }
 
     public abstract AbstractWizardModel onCreateModel();
+
+    public void setMaySubmit(boolean maySubmit) {
+mMaySubmit = maySubmit;
+    }
 
     public abstract void onSubmit();
 
@@ -251,8 +267,10 @@ public abstract class WizardActivity extends FragmentActivity implements
             if (recalculateCutOffPage()) {
                 mPagerAdapter.notifyDataSetChanged();
                 updateControls();
+                return;
             }
         }
+        updateControlSubmit();
     }
 
     @Override

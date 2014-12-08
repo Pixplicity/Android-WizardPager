@@ -30,6 +30,7 @@ public abstract class WizardActivity extends FragmentActivity implements
     protected ViewPager mPager;
     protected WizardPagerAdapter mPagerAdapter;
     protected Button mNextButton;
+    protected Button mSubmitButton;
     protected Button mPrevButton;
     protected StepPagerStrip mStepPagerStrip;
 
@@ -91,10 +92,11 @@ public abstract class WizardActivity extends FragmentActivity implements
     }
 
     protected void setControls(ViewPager pager, StepPagerStrip stepPagerStrip, Button nextButton,
-                               Button prevButton) {
+                               Button prevButton, Button submitButton) {
         mPager = pager;
         mStepPagerStrip = stepPagerStrip;
         mNextButton = nextButton;
+        mSubmitButton = submitButton;
         mPrevButton = prevButton;
         if (mPager == null) {
             throw new IllegalStateException("A ViewPager must be provided");
@@ -138,6 +140,17 @@ public abstract class WizardActivity extends FragmentActivity implements
                         onSubmit();
                     } else {
                         onNavigateNext(mEditingAfterReview);
+                    }
+                }
+            });
+        }
+
+        if(mSubmitButton != null) {
+            mSubmitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isFinalPage(mPager.getCurrentItem())) {
+                        onSubmit();
                     }
                 }
             });
@@ -190,10 +203,20 @@ public abstract class WizardActivity extends FragmentActivity implements
     protected void onPageShow(int position, boolean finalPage) {
         if (finalPage) {
             // Submit button for review step
+
+            mNextButton.setVisibility(View.GONE);
+            mSubmitButton.setVisibility(View.VISIBLE);
+
+            /*
             mNextButton.setText(R.string.wizard_finish);
             mNextButton.setTextAppearance(this, R.style.TextAppearanceFinish);
             mNextButton.setBackgroundColor(getResources().getColor(R.color.submit_background));
+            */
         } else {
+
+            mNextButton.setVisibility(View.VISIBLE);
+            mSubmitButton.setVisibility(View.GONE);
+
             // Next button for any other step
             mNextButton.setText(mEditingAfterReview
                     ? R.string.wizard_review

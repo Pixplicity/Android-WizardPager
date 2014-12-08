@@ -19,5 +19,7 @@ package com.pixplicity.wizardpager.wizard.ui;
 import com.pixplicity.wizardpager.wizard.model.Page;
 
 public interface PageFragmentCallbacks {
-    Page onGetPage(String key);
+
+    public Page onGetPage(String key);
+
 }

@@ -16,10 +16,10 @@
 
 package com.pixplicity.wizardpager.wizard.model;
 
-import java.util.ArrayList;
-
 import com.pixplicity.wizardpager.wizard.ui.MultipleChoiceFragment;
 import com.pixplicity.wizardpager.wizard.ui.WizardFragment;
+
+import java.util.ArrayList;
 
 /**
  * A page offering the user a number of non-mutually exclusive choices.
@@ -36,9 +36,21 @@ public class MultipleFixedChoicePage extends SingleFixedChoicePage {
     }
 
     @Override
-    public void getReviewItems(ArrayList<ReviewItem> dest) {
-        StringBuilder sb = new StringBuilder();
+    public boolean isCompleted() {
+        ArrayList<String> selections = mData.getStringArrayList(Page.SIMPLE_DATA_KEY);
+        return selections != null && selections.size() > 0;
+    }
 
+    public ArrayList<String> getValues() {
+        return mData.getStringArrayList(Page.SIMPLE_DATA_KEY);
+    }
+
+    public void setValues(ArrayList<String> selections) {
+        mData.putStringArrayList(Page.SIMPLE_DATA_KEY, selections);
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
         ArrayList<String> selections = mData.getStringArrayList(Page.SIMPLE_DATA_KEY);
         if (selections != null && selections.size() > 0) {
             for (String selection : selections) {
@@ -48,13 +60,7 @@ public class MultipleFixedChoicePage extends SingleFixedChoicePage {
                 sb.append(selection);
             }
         }
-
-        dest.add(new ReviewItem(getTitle(), sb.toString(), getKey()));
+        return sb.toString();
     }
 
-    @Override
-    public boolean isCompleted() {
-        ArrayList<String> selections = mData.getStringArrayList(Page.SIMPLE_DATA_KEY);
-        return selections != null && selections.size() > 0;
-    }
 }

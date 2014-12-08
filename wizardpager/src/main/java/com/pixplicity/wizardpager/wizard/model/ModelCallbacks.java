@@ -18,9 +18,12 @@ package com.pixplicity.wizardpager.wizard.model;
 
 /**
  * Callback interface connecting {@link Page}, {@link AbstractWizardModel}, and model container
- * objects (e.g. {@link com.pixplicity.wizardpager.MainActivity}.
+ * objects.
  */
 public interface ModelCallbacks {
-    void onPageDataChanged(Page page);
-    void onPageTreeChanged();
+
+    public void onPageDataChanged(Page page, boolean byUser);
+
+    public void onPageTreeChanged();
+
 }

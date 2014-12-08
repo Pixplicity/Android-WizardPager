@@ -11,7 +11,8 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
+  limitations under the License.
+
 -->
 
 <resources>
@@ -20,7 +21,7 @@
         <item name="textAppearanceFinish">@style/TextAppearanceFinish</item>
     </style>
 
-    <style name="TextAppearanceFinish" parent="android:TextAppearance.Holo.Medium">
+    <style name="TextAppearanceFinish" parent="android:TextAppearance.Medium">
         <item name="android:textColor">#fff</item>
     </style>
 

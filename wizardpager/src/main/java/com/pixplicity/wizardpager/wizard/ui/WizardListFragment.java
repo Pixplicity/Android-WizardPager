@@ -9,7 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.pixplicity.wizardpager.R;
@@ -38,7 +39,18 @@ public abstract class WizardListFragment extends WizardFragment {
         return rootView;
     }
 
-    public abstract ArrayAdapter<String> getAdapter();
+    @Override
+    public void notifyDataChanged() {
+        super.notifyDataChanged();
+        ListAdapter adapter = getAdapter();
+        if (adapter == null || !adapter.equals(mListView.getAdapter())) {
+            mListView.setAdapter(adapter);
+        } else if (adapter instanceof BaseAdapter) {
+            ((BaseAdapter) adapter).notifyDataSetChanged();
+        }
+    }
+
+    public abstract ListAdapter getAdapter();
 
     public abstract void onListItemClick(AdapterView<?> l, View view, int position, long id);
 

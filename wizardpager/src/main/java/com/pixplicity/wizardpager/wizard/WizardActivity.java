@@ -1,7 +1,5 @@
 package com.pixplicity.wizardpager.wizard;
 
-import java.util.List;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -20,6 +18,9 @@ import com.pixplicity.wizardpager.wizard.model.Page;
 import com.pixplicity.wizardpager.wizard.ui.PageFragmentCallbacks;
 import com.pixplicity.wizardpager.wizard.ui.ReviewFragment;
 import com.pixplicity.wizardpager.wizard.ui.StepPagerStrip;
+import com.pixplicity.wizardpager.wizard.ui.WizardFragment;
+
+import java.util.List;
 
 public abstract class WizardActivity extends FragmentActivity implements
         PageFragmentCallbacks,
@@ -29,6 +30,7 @@ public abstract class WizardActivity extends FragmentActivity implements
     protected ViewPager mPager;
     protected WizardPagerAdapter mPagerAdapter;
     protected Button mNextButton;
+    protected Button mSubmitButton;
     protected Button mPrevButton;
     protected StepPagerStrip mStepPagerStrip;
 
@@ -39,15 +41,16 @@ public abstract class WizardActivity extends FragmentActivity implements
     private boolean mConsumePageSelectedEvent;
 
     private List<Page> mCurrentPageSequence;
+    private boolean mMaySubmit = true;
+
+    public List<Page> getCurrentPageSequence() {
+        return mCurrentPageSequence;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mWizardModel = onCreateModel();
         super.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            mWizardModel.load(savedInstanceState.getBundle("model"));
-        }
 
         mWizardModel.registerListener(this);
     }
@@ -67,11 +70,33 @@ public abstract class WizardActivity extends FragmentActivity implements
         mWizardModel.unregisterListener(this);
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mWizardModel.load(savedInstanceState.getBundle("model"));
+        }
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBundle("model", mWizardModel.save());
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!useBackForPrevious() || !onNavigatePrevious()) {
+            super.onBackPressed();
+        }
+    }
+
     protected void setControls(ViewPager pager, StepPagerStrip stepPagerStrip, Button nextButton,
-            Button prevButton) {
+                               Button prevButton, Button submitButton) {
         mPager = pager;
         mStepPagerStrip = stepPagerStrip;
         mNextButton = nextButton;
+        mSubmitButton = submitButton;
         mPrevButton = prevButton;
         if (mPager == null) {
             throw new IllegalStateException("A ViewPager must be provided");
@@ -111,11 +136,21 @@ public abstract class WizardActivity extends FragmentActivity implements
 
                 @Override
                 public void onClick(View view) {
-                    if (mPager.getCurrentItem() == mCurrentPageSequence.size()
-                            - (mWizardModel.hasReviewPage() ? 0 : 1)) {
+                    if (isFinalPage(mPager.getCurrentItem())) {
                         onSubmit();
                     } else {
                         onNavigateNext(mEditingAfterReview);
+                    }
+                }
+            });
+        }
+
+        if(mSubmitButton != null) {
+            mSubmitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isFinalPage(mPager.getCurrentItem())) {
+                        onSubmit();
                     }
                 }
             });
@@ -146,7 +181,7 @@ public abstract class WizardActivity extends FragmentActivity implements
 
     private void updateControls() {
         int position = mPager.getCurrentItem();
-        if (position == mCurrentPageSequence.size() - (mWizardModel.hasReviewPage() ? 0 : 1)) {
+        if (isFinalPage(position)) {
             onPageShow(position, true);
         } else {
             onPageShow(position, false);
@@ -155,12 +190,34 @@ public abstract class WizardActivity extends FragmentActivity implements
         mPrevButton.setVisibility(position <= 0 ? View.INVISIBLE : View.VISIBLE);
     }
 
+    private boolean isFinalPage(int position) {
+        return position == mCurrentPageSequence.size() - (mWizardModel.hasReviewPage() ? 0 : 1);
+    }
+
+    private void updateControlSubmit() {
+        if (isFinalPage(mPager.getCurrentItem())) {
+            mNextButton.setEnabled(mMaySubmit);
+            mSubmitButton.setEnabled(mMaySubmit);
+        }
+    }
+
     protected void onPageShow(int position, boolean finalPage) {
         if (finalPage) {
             // Submit button for review step
+
+            mNextButton.setVisibility(View.GONE);
+            mSubmitButton.setVisibility(View.VISIBLE);
+
+            /*
             mNextButton.setText(R.string.wizard_finish);
             mNextButton.setTextAppearance(this, R.style.TextAppearanceFinish);
+            mNextButton.setBackgroundColor(getResources().getColor(R.color.submit_background));
+            */
         } else {
+
+            mNextButton.setVisibility(View.VISIBLE);
+            mSubmitButton.setVisibility(View.GONE);
+
             // Next button for any other step
             mNextButton.setText(mEditingAfterReview
                     ? R.string.wizard_review
@@ -169,7 +226,10 @@ public abstract class WizardActivity extends FragmentActivity implements
             getTheme().resolveAttribute(android.R.attr.textAppearanceMedium, v, true);
             mNextButton.setTextAppearance(this, v.resourceId);
             mNextButton.setEnabled(position != mPagerAdapter.getCutOffPage());
+            mSubmitButton.setEnabled(position != mPagerAdapter.getCutOffPage());
+            mNextButton.setBackgroundColor(0);
         }
+        updateControlSubmit();
     }
 
     protected boolean onNavigatePrevious() {
@@ -189,20 +249,20 @@ public abstract class WizardActivity extends FragmentActivity implements
         return true;
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBundle("model", mWizardModel.save());
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (!useBackForPrevious() || !onNavigatePrevious()) {
-            super.onBackPressed();
+    protected boolean onNavigateNext() {
+        if (isFinalPage(mPager.getCurrentItem())) {
+            onSubmit();
+        } else {
+            onNavigateNext(mEditingAfterReview);
         }
+        return true;
     }
 
     public abstract AbstractWizardModel onCreateModel();
+
+    public void setMaySubmit(boolean maySubmit) {
+mMaySubmit = maySubmit;
+    }
 
     public abstract void onSubmit();
 
@@ -227,13 +287,15 @@ public abstract class WizardActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onPageDataChanged(Page page) {
+    public void onPageDataChanged(Page page, boolean byUser) {
         if (page.isRequired()) {
             if (recalculateCutOffPage()) {
                 mPagerAdapter.notifyDataSetChanged();
                 updateControls();
+                return;
             }
         }
+        updateControlSubmit();
     }
 
     @Override
@@ -270,12 +332,24 @@ public abstract class WizardActivity extends FragmentActivity implements
         }
 
         @Override
-        public Fragment getItem(int i) {
-            if (i >= mCurrentPageSequence.size() && mWizardModel.hasReviewPage()) {
-                return new ReviewFragment();
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+            if (fragment instanceof WizardFragment) {
+                mCurrentPageSequence.get(position).setFragment((WizardFragment) fragment);
             }
+            return fragment;
+        }
 
-            return mCurrentPageSequence.get(i).createFragment();
+        @Override
+        public Fragment getItem(int i) {
+            Fragment fragment;
+            if (i >= mCurrentPageSequence.size() && mWizardModel.hasReviewPage()) {
+                fragment = mWizardModel.getReviewFragment();
+            } else {
+                fragment = mCurrentPageSequence.get(i).createFragment();
+                mCurrentPageSequence.get(i).setFragment((WizardFragment) fragment);
+            }
+            return fragment;
         }
 
         @Override
@@ -285,7 +359,6 @@ public abstract class WizardActivity extends FragmentActivity implements
                 // Re-use the current fragment (its position never changes)
                 return POSITION_UNCHANGED;
             }
-
             return POSITION_NONE;
         }
 

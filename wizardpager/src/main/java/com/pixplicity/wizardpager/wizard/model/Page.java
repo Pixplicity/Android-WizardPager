@@ -19,7 +19,9 @@ package com.pixplicity.wizardpager.wizard.model;
 import java.util.ArrayList;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
+import com.pixplicity.wizardpager.wizard.ui.SingleChoiceCursorFragment;
 import com.pixplicity.wizardpager.wizard.ui.WizardFragment;
 
 /**
@@ -41,12 +43,14 @@ public abstract class Page implements PageTreeNode {
     protected boolean mRequired = false;
     protected String mParentKey;
 
+    protected WizardFragment mFragment;
+
     protected Page(ModelCallbacks callbacks, String title) {
         mCallbacks = callbacks;
         mTitle = title;
     }
 
-    public Bundle getData() {
+    protected Bundle getData() {
         return mData;
     }
 
@@ -74,11 +78,17 @@ public abstract class Page implements PageTreeNode {
 
     public abstract WizardFragment createFragment();
 
+    public void setFragment(WizardFragment fragment) {
+        mFragment = fragment;
+    }
+
     public String getKey() {
         return mParentKey != null ? mParentKey + ":" + mTitle : mTitle;
     }
 
-    public abstract void getReviewItems(ArrayList<ReviewItem> dest);
+    public void getReviewItems(ArrayList<ReviewItem> dest) {
+        dest.add(new ReviewItem(getTitle(), toString(), getKey()));
+    }
 
     public boolean isCompleted() {
         return true;
@@ -86,15 +96,20 @@ public abstract class Page implements PageTreeNode {
 
     public void resetData(Bundle data) {
         mData = data;
-        notifyDataChanged();
+        notifyDataChanged(false);
     }
 
-    public void notifyDataChanged() {
-        mCallbacks.onPageDataChanged(this);
+    public void notifyDataChanged(boolean byUser) {
+        mCallbacks.onPageDataChanged(this, byUser);
     }
 
     public Page setRequired(boolean required) {
         mRequired = required;
         return this;
     }
+
+    public String toString() {
+        return mData.getString(SIMPLE_DATA_KEY);
+    }
+
 }

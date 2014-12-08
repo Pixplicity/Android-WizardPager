@@ -16,11 +16,6 @@
 
 package com.pixplicity.wizardpager.wizard.ui;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -38,15 +33,23 @@ import com.pixplicity.wizardpager.wizard.model.ModelCallbacks;
 import com.pixplicity.wizardpager.wizard.model.Page;
 import com.pixplicity.wizardpager.wizard.model.ReviewItem;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 public class ReviewFragment extends ListFragment implements ModelCallbacks {
 
-    private Callbacks mCallbacks;
-    private AbstractWizardModel mWizardModel;
-    private List<ReviewItem> mCurrentReviewItems;
+    protected Callbacks mCallbacks;
 
-    private ReviewAdapter mReviewAdapter;
+    protected List<ReviewItem> mCurrentReviewItems;
 
-    public ReviewFragment() {}
+    protected ReviewAdapter mReviewAdapter;
+
+    protected AbstractWizardModel mWizardModel;
+
+    public ReviewFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,13 +59,17 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        return getView(inflater, container);
+    }
+
+    public View getView(LayoutInflater inflater, ViewGroup container) {
         View rootView = inflater.inflate(R.layout.fragment_page_list, container, false);
 
         TextView titleView = (TextView) rootView.findViewById(android.R.id.title);
         titleView.setText(R.string.wizard_review);
-        titleView.setTextColor(getResources().getColor(R.color.review_green));
+        titleView.setTextColor(getResources().getColor(R.color.submit_background));
 
         ListView listView = (ListView) rootView.findViewById(android.R.id.list);
         setListAdapter(mReviewAdapter);
@@ -87,7 +94,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
 
     @Override
     public void onPageTreeChanged() {
-        onPageDataChanged(null);
+        onPageDataChanged(null, false);
     }
 
     @Override
@@ -99,7 +106,7 @@ public class ReviewFragment extends ListFragment implements ModelCallbacks {
     }
 
     @Override
-    public void onPageDataChanged(Page changedPage) {
+    public void onPageDataChanged(Page changedPage, boolean byUser) {
         ArrayList<ReviewItem> reviewItems = new ArrayList<ReviewItem>();
         for (Page page : mWizardModel.getCurrentPageSequence()) {
             page.getReviewItems(reviewItems);

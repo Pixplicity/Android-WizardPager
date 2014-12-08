@@ -22,7 +22,7 @@ package com.pixplicity.wizardpager.wizard.model;
  */
 public interface ModelCallbacks {
 
-    public void onPageDataChanged(Page page);
+    public void onPageDataChanged(Page page, boolean byUser);
 
     public void onPageTreeChanged();
 

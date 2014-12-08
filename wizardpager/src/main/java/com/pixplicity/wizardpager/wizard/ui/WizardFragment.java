@@ -69,4 +69,7 @@ public abstract class WizardFragment extends Fragment {
 
     public abstract int getLayoutResId();
 
+    public void notifyDataChanged() {
+    }
+
 }

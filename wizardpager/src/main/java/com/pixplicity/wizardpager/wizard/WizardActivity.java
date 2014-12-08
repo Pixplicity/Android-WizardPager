@@ -197,6 +197,7 @@ public abstract class WizardActivity extends FragmentActivity implements
     private void updateControlSubmit() {
         if (isFinalPage(mPager.getCurrentItem())) {
             mNextButton.setEnabled(mMaySubmit);
+            mSubmitButton.setEnabled(mMaySubmit);
         }
     }
 
@@ -225,6 +226,7 @@ public abstract class WizardActivity extends FragmentActivity implements
             getTheme().resolveAttribute(android.R.attr.textAppearanceMedium, v, true);
             mNextButton.setTextAppearance(this, v.resourceId);
             mNextButton.setEnabled(position != mPagerAdapter.getCutOffPage());
+            mSubmitButton.setEnabled(position != mPagerAdapter.getCutOffPage());
             mNextButton.setBackgroundColor(0);
         }
         updateControlSubmit();
